@@ -1,0 +1,233 @@
+<Label>:
+    color: 0.3,0.6,0.7,1
+<Button>:
+    background_color: .0,1,.0,.5
+    color: 0,0,0,1
+<Screen>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+MDNavigationLayout:
+
+    ScreenManager:
+        name: "sm"
+        id : sm
+
+
+        Screen:
+            name: "login_screen"
+            id: login_screen
+            size: root.width, root.height
+
+
+            FloatLayout:
+
+                MDTopAppBar:
+                    pos_hint: {"top": 1}
+                    title: "Login"
+
+                Label:
+                    text: "Email"
+                    font_size: 20
+                    pos_hint: {"x": -0.35, "y": 0.3 }
+
+                TextInput:
+                    id: email
+                    size_hint: 0.7, 0.05
+                    pos_hint: {"x": 0.09, "y": 0.7 }
+                    multiline: False
+
+                Label:
+                    text: "Password"
+                    font_size: 20
+                    pos_hint: {"x": -0.3, "y": 0.15 }
+
+                TextInput:
+                    id: password
+                    multiline: False
+                    size_hint: 0.7, 0.05
+                    pos_hint: {"x": 0.09, "y": 0.55 }
+
+                Button:
+                    size_hint: 0.5, 0.05
+                    pos_hint: {"x": 0.09, "y": 0.4 }
+                    text: "Login"
+                    on_press: app.login_btn()
+
+                Label:
+                    text: "Don't Have An Account?"
+                    font_size: 12
+                    pos_hint: {"x": -0.25, "y": -0.12 }
+
+                Button:
+                    size_hint: 0.5, 0.05
+                    pos_hint: {"x": 0.09, "y": 0.3 }
+                    text: "Sign Up"
+                    on_press: sm.current = 'signup_screen'
+
+        Screen:
+            name: "mood_screen"
+            id: mood_screen
+            md_bg_color: 0, 0.6, 0.4,1
+
+
+            FloatLayout:
+
+                MDTopAppBar:
+
+                    pos_hint: {"top": 1}
+                    title:"Mood Tracker"
+                    left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+
+                BoxLayout:
+                    id: graph_container
+                    orientation: "vertical"
+                    size_hint: 1, 0.6  # Controls how much space graph takes
+                    pos_hint: {"top": 0.8}  # Positioning inside parent layout
+
+        Screen:
+            name: "signup_screen"
+            id: signup_screen
+
+            MDTopAppBar:
+                pos_hint: {"top": 1}
+                title: "Sign Up"
+                left_action_items: [["back", lambda x: nav_drawer.set_state("open")]]
+
+            Label:
+                text: "First Name"
+                font_size: 20
+                pos_hint: {"x": -0.3, "top": 1.325}
+
+            TextInput:
+                id: fname
+                multiline: False
+                size_hint: 0.7, 0.05
+                pos_hint: {"x": 0.09, "y": 0.75}
+
+            Label:
+                text: "Last Name"
+                font_size: 20
+                pos_hint: {"x": -0.3, "top": 1.22}
+
+            TextInput:
+                id: lname
+                multiline: False
+                size_hint: 0.7, 0.05
+                pos_hint: {"x": 0.09, "top": 0.7 }
+
+
+            Label:
+                text: "Email"
+                font_size: 20
+                pos_hint: {"x": -0.35, "top":1.125}
+
+            TextInput:
+                id: up_email
+                size_hint: 0.7, 0.05
+                pos_hint: {"x": 0.09, "top": 0.6}
+                multiline: False
+
+            Label:
+                text: "Password"
+                font_size: 20
+                pos_hint: {"x": -0.3, "top": 1.03}
+
+            TextInput:
+                id: up_password
+                multiline: False
+                size_hint: 0.7, 0.05
+                pos_hint: {"x": 0.09, "top": 0.5 }
+
+            Label:
+                text: "Security Question: What is the name of your birthplace?"
+                font_size: 15
+                pos_hint: {"x": 0, "top": 0.92}
+
+            TextInput:
+                id: security_ans
+                multiline: False
+                size_hint: 0.7, 0.05
+                pos_hint: {"x": 0.09, "top": 0.4 }
+
+
+            Button:
+                size_hint: 0.5, 0.05
+                pos_hint: {"x": 0.09, "y": 0.2 }
+                text: "Sign Up"
+                on_press: app.up_btn()
+                on_press: sm.current = "login_screen"
+
+    MDNavigationDrawer:
+        enable_swiping: False if sm.current == "login_screen" or sm.current == "signup_screen" else True
+        id: nav_drawer
+
+        BoxLayout:
+            orientation: "vertical"  # Layout for items inside the drawer
+            spacing: "8dp"  # Spacing between items in the drawer
+            padding: "8dp"  # Padding for the drawer contents
+
+            # Label at the top of the navigation drawer
+            MDLabel:
+                text: "Menu"
+                font_style: "H5"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            # Menu items inside the navigation drawer, each with a respective screen to navigate to
+            MDNavigationDrawerMenu:
+
+                #menu items such as Chatbot, Mood Tracker, etc.
+                MDNavigationDrawerItem:
+                    text: "Chatbot"
+                    icon: "chatbot.png"
+                    on_press:
+                        sm.current = "chatbot_screen"  # Navigate to the meditation screen
+                        nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Mood Tracker"
+                    icon: "gauge.png"
+                    on_release: sm.current = "mood_screen"
+                    on_release: nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Habit Tracker"
+                    icon: "habits.png"
+                    on_press: nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "My Journal"  # Navigate to the journal screen
+                    icon: "journal.png"
+                    on_press:
+                        #screen_manager.current = "journal"  # Navigate to the journal screen
+                        nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Meditation Timer"  # Navigate to the meditation screen
+                    icon: "meditation.png"
+                    on_release:
+                        sm.current = "meditation"  # Navigate to the meditation screen
+                        nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Settings"  # Settings item in the menu
+                    icon: "settings.png"
+                    on_press: sm.current ="settings"
+                    on_release: nav_drawer.set_state("close")
+
+                # BoxLayout at the bottom for the logout button
+                BoxLayout:
+                    size_hint_y: None
+                    height: "50dp"
+
+                # Logout item at the bottom of the drawer
+                MDNavigationDrawerItem:
+                    text: "Logout"
+                    icon: "logout.png"
+                    on_press: sm.current ="login_screen"
+                    on_press: nav_drawer.set_state("close")
