@@ -1,0 +1,15 @@
+{
+    "entries": [
+        {
+            "text": "this is a test file",
+            "date": "2025-02-23 01:01:51",
+            "archived": false
+        },
+        {
+            "text": "I'm here on my second day",
+            "date": "2025-02-23 23:05:49",
+            "archived": false
+        }
+    ],
+    "archived_entries": []
+}

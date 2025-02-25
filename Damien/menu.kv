@@ -1,0 +1,332 @@
+#This is the KV layout file that defines the user interface.
+#It sets up the MDNavigationLayout containing a ScreenManager (for multiple screens)
+# and a MDNavigationDrawer (a sidebar menu).
+#Guide to Kv Language: https://kivy.org/doc/stable/guide/lang.html
+
+MDNavigationLayout:
+    # The ScreenManager handles switching between different screens.
+    ScreenManager:
+        id: screen_manager
+
+        # The following lines instantiate the screens defined in menu.py.
+        MainScreen:
+        MeditationScreen:
+        JournalScreen:
+        ChatbotScreen:
+
+    # The MDNavigationDrawer defines the sliding menu from the left.
+    MDNavigationDrawer:
+        id: nav_drawer
+        BoxLayout:
+            orientation: "vertical"
+            spacing: "8dp"
+            padding: "8dp"
+
+            # Label at the top of the drawer.
+            MDLabel:
+                text: "Menu"
+                font_style: "H5"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            # The MDNavigationDrawerMenu holds individual navigation items.
+            MDNavigationDrawerMenu:
+                MDNavigationDrawerItem:
+                    text: "Home"
+                    on_press:
+                        screen_manager.current = "main"  # Switch to MainScreen
+                        nav_drawer.set_state("close")
+                MDNavigationDrawerItem:
+                    text: "Chatbot"
+                    icon: "chatbot.png"
+                    on_press:
+                        screen_manager.current = "chatbot"
+                        nav_drawer.set_state("close")
+                MDNavigationDrawerItem:
+                    text: "Mood Tracker"
+                    icon: "gauge.png"
+                    on_press: nav_drawer.set_state("close")
+                MDNavigationDrawerItem:
+                    text: "Habit Tracker"
+                    icon: "habits.png"
+                    on_press: nav_drawer.set_state("close")
+                MDNavigationDrawerItem:
+                    text: "My Journal"
+                    icon: "journal.png"
+                    on_press:
+                        screen_manager.current = "journal"
+                        nav_drawer.set_state("close")
+                MDNavigationDrawerItem:
+                    text: "Meditation Timer"
+                    icon: "meditation.png"
+                    on_press:
+                        screen_manager.current = "meditation"  # Switch to MeditationScreen
+                        nav_drawer.set_state("close")
+                MDNavigationDrawerItem:
+                    text: "Settings"
+                    icon: "settings.png"
+                    on_press: nav_drawer.set_state("close")
+
+            # Spacer layout at the bottom.
+            BoxLayout:
+                size_hint_y: None
+                height: "50dp"
+
+            # Logout item at the bottom of the drawer.
+            MDNavigationDrawerItem:
+                text: "Logout"
+                icon: "logout.png"
+                on_press: nav_drawer.set_state("close")
+
+# -----------------------------
+# Main Screen Layout (Home)
+# -----------------------------
+<MainScreen>:
+    name: "main"
+    MDBoxLayout:
+        orientation: "vertical"
+
+        # Top app bar with a menu button to open the navigation drawer.
+        MDTopAppBar:
+            title: "Mental Health Menu"
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+            elevation: 10
+
+        # Main content with a welcoming message.
+        MDBoxLayout:
+            orientation: "vertical"
+            md_bg_color: 0, 0.6, 0.3, 1  # Background color
+            MDLabel:
+                text: "Welcome to the Main Screen"
+                halign: "center"
+
+# -----------------------------
+# Meditation Screen Layout
+# -----------------------------
+<MeditationScreen>:
+    name: "meditation"
+
+    FloatLayout:
+        # Fixed top app bar for the meditation screen.
+        MDTopAppBar:
+            title: "Meditation Timer"
+            elevation: 3
+            size_hint_y: None
+            height: "56dp"
+            pos_hint: {"top": 1}
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+
+        # Meditation instructions near the top.
+        MDLabel:
+            text: "[b]Time to Meditate"
+            markup: True
+            text_color: 0.2, 0.6, 0.8, 1
+            halign: "center"
+            font_style: "H4"
+            size_hint: (1, None)
+            height: "40dp"
+            pos_hint: {"top": 0.88}
+
+        # A rectangle timer display using MDCard with custom canvas instructions.
+        MDCard:
+            size_hint: (None, None)
+            size: ("300dp", "150dp")
+            pos_hint: {"center_x": 0.5, "center_y": 0.66}
+            elevation: 4
+            md_bg_color: 0, 0, 0, 0 #Transparent background
+            canvas.before:
+                # Outer rectangle (blue)
+                Color:
+                    rgba: 0.4, 0.7, 0.7, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(20), dp(20), dp(20), dp(20)]
+                # Inner rectangle (purple) to create a border effect.
+                Color:
+                    rgba: 0.8, 0.9, 0.9, 1
+                RoundedRectangle:
+                    pos: (self.x + dp(20), self.y + dp(20))
+                    size: (self.width - dp(40), self.height - dp(40))
+                    radius: [dp(15), dp(15), dp(15), dp(15)]
+
+            # The timer label is centered within the rectangular card.
+            FloatLayout:
+                MDLabel:
+                    id: timer_label
+                    text: root.timer_label_text #Dynamically updates based on the timer.
+                    halign: "center"
+                    font_style: "H2"
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+
+        # Timer control buttons (Start & Reset) below the circle.
+        MDBoxLayout:
+            orientation: "horizontal"
+            spacing: "20dp"
+            size_hint: (None, None)
+            height: "1dp"
+            width: "200dp"
+            pos_hint: {"center_x": 0.43, "center_y": 0.46}
+
+            MDRaisedButton:
+                text: "Start"
+                md_bg_color: 0.2, 0.4, 0.8, 1
+                text_color: 1, 1, 1, 1
+                font_size: "18sp"
+                bold: True
+                on_press: root.start_timer()
+
+            MDRaisedButton:
+                text: "Pause"
+                md_bg_color: 1, 0.7, 0, 1
+                text_color: 1, 1, 1, 1
+                font_size: "18sp"
+                bold: True
+                on_press: root.pause_timer()
+
+            MDRaisedButton:
+                text: "Reset"
+                md_bg_color: 1, 0.3, 0.3, 1
+                text_color: 1, 1, 1, 1
+                font_size: "18sp"
+                bold: True
+                on_press: root.reset_timer()
+
+        # Label for the meditation sound options.
+        MDLabel:
+            text: "Choose Your Meditation Sounds"
+            halign: "center"
+            size_hint: (1, None)
+            height: "40dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.35}
+            font_style: "H6"
+
+        # BoxLayout containing buttons for sound selection.
+        MDGridLayout:
+            cols: 2
+            spacing: "10dp"
+            size_hint: (None, None)
+            width: "280dp"
+            height: "140dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+
+            # Each MDFillRoundFlatIconButton calls the select_sound method in MeditationScreen.
+            MDFillRoundFlatIconButton:
+                icon: "wave.png"
+                text: "Ocean Waves"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Ocean.mp3")
+            MDFillRoundFlatIconButton:
+                icon: "rain.png"
+                text: "Rain Sounds"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Rain.mp3")
+            MDFillRoundFlatIconButton:
+                icon: "bowl.png"
+                text: "Tibetan Bowl"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Bowl.mp3")
+            MDFillRoundFlatIconButton:
+                icon: "bonfire.png"
+                text: "Fire Crackles"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Bonfire.mp3")
+
+        #Bottom Navigation Bar with Chatbot Button
+        MDFloatLayout:
+            size_hint_y: None
+            height: "60dp"
+            pos_hint: {"bottom": 1}
+            md_bg_color: 0.8, 0.6, 1, 1  # Light Purple
+
+            MDFloatingActionButton:
+                icon: "chatbot.png"  # Chatbot icon
+                icon_size: "50sp"
+                md_bg_color: 0.9, 0.75, 1, 1  # Lavender color for the button
+                size_hint: None, None
+                size: "90dp", "90dp"  # Standard floating button size
+                elevation: 4
+                pos_hint: {"center_x": 0.47, "center_y": 0.76}  # Center the button
+                on_press: app.root.ids.screen_manager.current = "chatbot"
+
+# -----------------------------
+# Journal Screen Layout
+# -----------------------------
+<JournalScreen>:
+    name: "journal"
+
+
+    BoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Journal"
+            elevation: 3
+            size_hint_y: None
+            height: "56dp"
+            pos_hint: {"top": 1}
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+
+        ScrollView:
+            MDList:
+                id: journal_list
+
+        MDCard:
+            size_hint_y: None
+            height: "150dp"
+            padding: "10dp"
+            radius: [20, 20, 20, 20]
+            elevation: 10
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: "15dp"
+
+                MDTextField:
+                    id: journal_input
+                    hint_text: "Write your journal entry here..."
+                    multiline: True
+                    size_hint_x: 1
+                    mode: "rectangle"
+                    helper_text_mode: "on_focus"
+
+                GridLayout:
+                    cols: 2
+                    size_hint_y: None
+                    height: "50dp"
+                    spacing: "10dp"
+
+                    MDRaisedButton:
+                        text: "Save Entry"
+                        size_hint_x: None
+                        width: "150dp"
+                        md_bg_color: app.theme_cls.primary_color
+                        on_release: root.save_entry()
+
+                    MDRaisedButton:
+                        id: archive_toggle_button
+                        text: "View Archived Entries"
+                        size_hint_x: None
+                        width: "200dp"
+                        md_bg_color: app.theme_cls.accent_color
+                        on_release: root.toggle_archive()
+
+
+<ChatbotScreen>:
+    name: "chatbot"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Chatbot"
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+            elevation: 4
+
+        MDLabel:
+            text: "Chatbot Coming Soon..."
+            halign: "center"
+            font_style: "H5"
+
