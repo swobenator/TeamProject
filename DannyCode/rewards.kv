@@ -1,0 +1,22 @@
+BoxLayout:
+    orientation: "vertical"
+    padding: 20
+    spacing: 15
+
+    Label:
+        id: streak_label
+        text: "Streak: 0 days"
+        font_size: 24
+
+    Label:
+        id: coins_label
+        text: "Coins: 0"
+        font_size: 24
+
+    Button:
+        text: "Spend 50 Coins to Remove Ads for 1 Day"
+        on_press: app.remove_ads()
+
+    Button:
+        text: "Spend 100 Coins for Premium Feature"
+        on_press: app.unlock_premium()

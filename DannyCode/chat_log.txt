@@ -1,0 +1,401 @@
+2025-02-12 13:10:10 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+[2025-02-12 13:10:10]
+User: i am anxious
+MentalHealthBot: I'm sorry to hear that you're feeling anxious. It's important to remember that feeling anxious is a common experience and you're not alone in this. Is there anything specific that is causing you to feel anxious? Understanding the root cause of your anxiety can help in finding ways to manage it. Remember to take deep breaths, practice mindfulness, and reach out to a trusted person for support. If you feel overwhelmed, don't hesitate to seek professional help from a therapist or counselor. Your mental health is important, and there are resources available to support you.
+
+2025-02-12 13:10:45 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 400 Bad Request"
+2025-02-12 13:12:15 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+[2025-02-12 13:12:15]
+User: i am anxious
+MentalHealthBot: I'm here to help. It's common to feel anxious at times, but it's important to address it so it doesn't become overwhelming. Here are some tips that might help:
+
+1. Take deep breaths: Practice deep breathing exercises to help calm yourself down.
+2. Grounding techniques: Focus on your senses by touching something nearby, listening to calming music, or observing your surroundings.
+3. Stay present: Try to focus on the present moment rather than worrying about the future.
+4. Reach out for support: Talk to someone you trust about how you're feeling, whether it's a friend, family member, or mental health professional.
+5. Consider seeking therapy: A therapist can help you explore the root causes of your anxiety and develop
+
+2025-02-12 13:12:27 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+[2025-02-12 13:12:27]
+User: i ma anxious
+MentalHealthBot: I'm sorry to hear that you're feeling anxious. It's important to address these feelings and take steps to manage them. Here are a few more tips that might help:
+
+1. Practice self-care: Make sure you're taking care of yourself by getting enough rest, eating well, and engaging in activities you enjoy.
+2. Get moving: Physical activity can help reduce anxiety and improve your mood. Consider going for a walk, practicing yoga, or dancing to your favorite music.
+3. Challenge negative thoughts: Try to identify any negative thoughts that might be contributing to your anxiety and work on reframing them in a more positive light.
+4. Consider relaxation techniques: Explore relaxation techniques such as meditation, progressive muscle relaxation, or guided imagery to help calm
+
+2025-02-12 13:12:39 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+[2025-02-12 13:12:39]
+User: i am anxious
+MentalHealthBot: I'm here to support you. It sounds like you're really struggling with anxiety. It's important to remember that it's okay to feel this way, and there are ways to manage it. Here are a few more suggestions to help you cope with your anxiety:
+
+1. Consider seeking professional help: A therapist or counselor can provide you with the tools and support you need to manage your anxiety.
+2. Practice mindfulness: Mindfulness techniques can help you stay grounded in the present moment and reduce anxiety.
+3. Create a self-care routine: Taking care of yourself is essential. Make time for activities that bring you joy and relaxation.
+4. Try journaling: Writing down your thoughts and feelings can help you process them and gain insights into your anxiety triggers
+
+[2025-02-17 15:17:17]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 15:20:32]
+User: hello
+MentalHealthBot: Hello! How are you feeling today?
+
+[2025-02-17 15:21:35]
+User: i am depressed
+MentalHealthBot: I'm sorry to hear that you're feeling this way. It's important to reach out for help. Consider speaking to a therapist or counselor to discuss your feelings and develop coping strategies. You can also reach out to a mental health helpline or support group for immediate assistance. Remember, you are not alone, and there are people who care about you and want to help.
+
+[2025-02-17 15:31:49]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 15:32:02]
+User: i am anxious
+MentalHealthBot: I'm here to help. What's been causing your anxiety?
+
+[2025-02-17 15:32:25]
+User: I feel overwhelmed with work
+MentalHealthBot: It's understandable to feel overwhelmed with work. Try breaking tasks into smaller steps, prioritize, and take breaks to manage stress. Remember to also practice self-care and seek support when needed.
+
+[2025-02-17 15:38:34]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 15:44:57]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 15:48:51]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 15:49:11]
+User: i am anxious
+MentalHealthBot: I'm sorry to hear that you're feeling anxious. It's important to remember that it's a normal and common feeling, but there are strategies to help manage it. Would you like to talk more about what's causing your anxiety or explore some coping techniques?
+
+[2025-02-17 15:50:01]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 15:57:01]
+User: hello
+MentalHealthBot: Hello! How are you today? How can I support you?
+
+[2025-02-17 18:02:13]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 18:09:29]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 18:09:49]
+User: give me financial advice
+MentalHealthBot: I'm here to provide mental health support. If you need financial advice, I recommend reaching out to a financial advisor or counselor who can assist you with your specific financial concerns. How else can I support you today in terms of mental health?
+
+[2025-02-17 18:10:03]
+User: .
+MentalHealthBot: If you'd like to talk about any mental health struggles or concerns you may have, feel free to share. I'm here to listen and offer support.
+
+[2025-02-17 18:14:54]
+User: yup
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 18:15:08]
+User: give me gym advice
+MentalHealthBot: Exercise can have a positive impact on mental health. Start with activities you enjoy, set realistic goals, and listen to your body. Consistency is key. Remember to consult with a healthcare professional before starting any new fitness routine.
+
+[2025-02-17 18:21:56]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 18:22:06]
+User: i am depressed
+MentalHealthBot: I'm sorry to hear that you're feeling this way. It's important to reach out for support. Have you spoken to anyone about how you're feeling?
+
+[2025-02-17 18:26:57]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-17 18:27:06]
+User: dscnmsdcnm
+MentalHealthBot: It seems like you might be feeling overwhelmed. Can you share a bit more about what's going on for you right now?
+
+[2025-02-17 18:27:42]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-18 15:22:44]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-18 15:22:53]
+User: i am anxious
+MentalHealthBot: I'm sorry to hear that you're feeling anxious. Would you like to talk about what's causing your anxiety or how you're feeling right now?
+
+[2025-02-18 15:28:21]
+User: dd
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-18 15:28:31]
+User: how are u
+MentalHealthBot: I'm here to support you. How are you feeling today?
+
+[2025-02-18 15:28:54]
+User: i am depressed
+MentalHealthBot: I'm sorry to hear that. It's important to reach out for help when feeling this way. Have you spoken to a mental health professional about how you're feeling?
+
+[2025-02-18 15:29:35]
+User: am gay
+MentalHealthBot: It's great that you feel comfortable sharing that with me. Being gay is a natural part of who you are. If you're struggling with your sexual orientation, seeking support from friends, family, or a therapist can be helpful. Remember, you are not alone.
+
+[2025-02-18 15:34:23]
+User: dffvdfg
+MentalHealthBot: It looks like you may have entered random letters. How can I support you today?
+
+[2025-02-18 15:34:28]
+User: asxdcvb
+MentalHealthBot: It seems like you might be feeling overwhelmed or distressed. Is there anything specific you would like to talk about or any support you need right now?
+
+[2025-02-18 15:44:37]
+User: dd
+MentalHealthBot: It seems like you may have mistyped your message. How can I support you today?
+
+[2025-02-18 15:44:59]
+User: my head huryts
+MentalHealthBot: I'm sorry to hear that you're experiencing head pain. It's important to take care of yourself. Have you tried any pain relief methods like resting, drinking water, or taking over-the-counter medication? If the pain persists or worsens, it may be a good idea to consult a healthcare professional for further evaluation and treatment.
+
+[2025-02-18 15:45:30]
+User: hh
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-18 16:12:16]
+User: hh
+MentalHealthBot: Hello! How can I help you today?
+
+[2025-02-18 16:12:25]
+User: dfdf
+MentalHealthBot: I'm here to help. What's on your mind?
+
+[2025-02-18 16:13:09]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-18 16:13:13]
+User: sad
+MentalHealthBot: I'm sorry to hear that you're feeling sad. Can you tell me a little more about what's been going on?
+
+[2025-02-18 16:25:02]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-18 16:25:11]
+User: sd
+MentalHealthBot: It seems like you may have typed something by mistake. If you have any mental health concerns or need support, feel free to share.
+
+[2025-02-19 10:07:23]
+User: hello
+MentalHealthBot: Hello! How can I support you today?
+
+[2025-02-19 10:07:35]
+User: crypto
+MentalHealthBot: It's important to prioritize your mental health, especially during times of stress or uncertainty like investing in cryptocurrency. Remember to take breaks, seek support if needed, and make informed decisions. How are you feeling about your crypto investments right now?
+
+[2025-02-19 10:16:53]
+User: xcx
+MentalHealthBot: It seems like there may have been a misunderstanding. If you have any mental health concerns or need support, feel free to share. I'm here to help.
+
+[2025-02-19 10:27:02]
+User: hhh
+MentalHealthBot: If you have any mental health concerns or need support, please feel free to share. I'm here to help.
+
+[2025-02-19 10:27:12]
+User: ddd
+MentalHealthBot: If you have any mental health concerns or need support, please feel free to share. I'm here to help.
+
+[2025-02-19 10:33:12]
+User: have we talked about finance before
+MentalHealthBot: We haven't discussed finance specifically, but if you have any questions or concerns related to mental health and finance, feel free to share. How can I support you today?
+
+[2025-02-19 10:33:37]
+User: what have I talked to you about
+MentalHealthBot: You have mentioned cryptocurrency investments and made some short responses. If there is anything specific you would like to discuss or ask about, feel free to share. I'm here to help.
+
+[2025-02-19 10:34:45]
+User: have I talked about being anxious to you before
+MentalHealthBot: Yes, you mentioned feeling anxious in a previous conversation. If you want to talk more about your anxiety or need support, please feel free to share. I'm here to help.
+
+[2025-02-19 10:36:58]
+User: ss
+MentalHealthBot: If you have any questions or need support regarding anxiety or any other mental health concerns, please don't hesitate to reach out. I'm here to help.
+
+[2025-02-19 10:37:24]
+User: dd
+MentalHealthBot: If you need assistance or have any mental health-related questions, feel free to share. Your well-being is important, and I'm here to support you.
+
+[2025-02-19 10:37:42]
+User: xx
+MentalHealthBot: If you have any concerns or need support with mental health issues, please feel free to share. I'm here to help you.
+
+[2025-02-19 10:37:58]
+User: dd
+MentalHealthBot: If you have any specific questions or need support with mental health challenges, please let me know. I'm here to assist you.
+
+[2025-02-19 11:36:12]
+User: hello
+MentalHealthBot: Hello! How are you feeling today? If you have any questions or need support with your mental health, feel free to share.
+
+[2025-02-19 11:36:43]
+User: dd
+MentalHealthBot: It seems like you may have entered "dd" multiple times. If you have any concerns or need support related to mental health, please feel free to share. I'm here to assist you.
+
+[2025-02-19 11:37:12]
+User: dd
+MentalHealthBot: If you have any mental health-related questions or need support, please feel free to share. I'm here to help you.
+
+[2025-02-19 11:40:33]
+User: dd
+MentalHealthBot: It seems like you may be experiencing some difficulty or confusion. If you need help or support with anything related to mental health, feel free to reach out.
+
+[2025-02-19 11:41:19]
+User: dd
+MentalHealthBot: If you are facing challenges or need assistance with mental health issues, please let me know. I'm here to support you.
+
+[2025-02-19 11:41:41]
+User: ff
+MentalHealthBot: It seems like you may be experiencing some challenges or confusion. If you have any mental health-related concerns, feel free to share. I'm here to assist you.
+
+[2025-02-19 11:43:15]
+User: dd
+MentalHealthBot: If you are struggling with mental health issues or need support, please know that help is available. You can share your concerns, and I'm here to assist you.
+
+[2025-02-19 11:45:21]
+User: ss
+MentalHealthBot: If you have any mental health-related questions or need support, please feel free to share. I'm here to help you.
+
+[2025-02-19 11:48:17]
+User: ss
+MentalHealthBot: If you're facing mental health challenges or need support, please don't hesitate to reach out. I'm here to assist you.
+
+[2025-02-19 12:07:18]
+User: ss
+MentalHealthBot: If you're experiencing mental health struggles or need support, please share with me. I'm here to help you navigate through it.
+
+[2025-02-19 12:12:26]
+User: ss
+MentalHealthBot: If you have any mental health concerns, please feel free to talk about them. I'm here to support you.
+
+[2025-02-19 12:12:33]
+User: ss
+MentalHealthBot: It seems like you may be trying to communicate something with "ss." If there's a specific issue or question you have related to mental health, please share, and I'll do my best to assist you.
+
+[2025-02-19 12:14:07]
+User: ss
+MentalHealthBot: If you're having trouble expressing yourself or if you need support with anything related to mental health, please share more details. I'm here to help.
+
+[2025-02-19 12:15:03]
+User: ss
+MentalHealthBot: If you're facing challenges or need support with your mental health, feel free to share. I'm here to help you navigate through it.
+
+[2025-02-19 12:26:51]
+User: ss
+MentalHealthBot: It's okay if you're finding it difficult to share right now. Whenever you're ready to talk or need support, I'll be here for you. Take your time.
+
+[2025-02-24 22:07:36]
+User: hello
+MentalHealthBot: Hello! How are you feeling today? If you have any questions or need support, feel free to share.
+
+[2025-02-24 22:09:27]
+User: hello
+MentalHealthBot: Hello! How are you feeling today? If you have any questions or need support, feel free to share.
+
+[2025-02-24 22:15:30]
+User: hi
+MentalHealthBot: Hello! How are you feeling today? If you have anything on your mind or need support, I'm here to help.
+
+[2025-02-24 22:15:49]
+User: hh
+MentalHealthBot: If you're not ready to talk, that's okay. Remember, I'm here whenever you need someone to listen or provide support. Take care.
+
+[2025-02-24 22:16:13]
+User: gg
+MentalHealthBot: If there's anything specific you'd like to discuss or if you have any questions, feel free to share. I'm here to help in any way I can.
+
+[2025-02-24 22:16:35]
+User: gg
+MentalHealthBot: If you ever feel like talking or need support, don't hesitate to reach out. Remember, you're not alone in your struggles. Take care.
+
+[2025-02-24 22:16:56]
+User: gg
+MentalHealthBot: If you're feeling overwhelmed or need support, it's important to talk to someone you trust or a mental health professional. Your well-being is important, so please don't hesitate to seek help.
+
+[2025-02-24 22:24:30]
+User: ff
+MentalHealthBot: I'm here to support you whenever you're ready to talk. Remember, it's okay to seek help and take care of your mental health. You're not alone in this journey.
+
+[2025-02-24 22:24:58]
+User: dd
+MentalHealthBot: It's okay to take some time for yourself. Whenever you're ready to talk or need support, feel free to reach out. Your well-being is important. Take care.
+
+[2025-02-24 22:25:45]
+User: dd
+MentalHealthBot: I'm here whenever you're ready to talk or need support. Remember to prioritize your mental health and well-being. Take care of yourself.
+
+[2025-02-24 22:26:19]
+User: ss
+MentalHealthBot: If you ever feel like sharing or need support, feel free to reach out. Your mental health is important, and it's okay to seek help. Take care of yourself.
+
+[2025-02-24 22:28:46]
+User: ff
+MentalHealthBot: If you're feeling overwhelmed, it's important to talk to someone you trust or a mental health professional. Remember, your well-being matters, and seeking help is a positive step.
+
+[2025-02-24 22:29:15]
+User: sdfg
+MentalHealthBot: I'm here to support you whenever you're ready to talk. Remember, it's okay to seek help and take care of your mental health. You're not alone in this journey.
+
+[2025-02-24 22:32:18]
+User: yo
+MentalHealthBot: Hello! If you have any questions or need support, feel free to share. Your mental health matters, and I'm here to help.
+
+[2025-02-24 22:34:31]
+User: yo
+MentalHealthBot: Hello! How are you feeling today? If you have anything on your mind or need support, I'm here to listen.
+
+[2025-02-24 22:34:52]
+User: yo
+MentalHealthBot: Hello! If you ever want to talk or need support, feel free to reach out. Your well-being is important, and I'm here to help.
+
+[2025-02-24 22:37:11]
+User: dd
+MentalHealthBot: If you have any concerns or need assistance with your mental health, don't hesitate to share. Your well-being is important, and I'm here to provide support.
+
+[2025-02-24 22:37:29]
+User: rr
+MentalHealthBot: If you have any questions or need support, feel free to reach out. Your mental health matters, and I'm here to help.
+
+[2025-02-24 22:40:54]
+User: ff
+MentalHealthBot: If you have any specific concerns or questions related to mental health, feel free to share. I'm here to provide support and guidance.
+
+[2025-02-24 22:43:03]
+User: ss
+MentalHealthBot: If you'd like to discuss anything related to mental health or need support, please feel free to share. Your well-being is important, and I'm here to help.
+
+[2025-02-25 15:19:40]
+User: rfrffr
+MentalHealthBot: It's okay if you're feeling overwhelmed. If you want to talk about what's going on, I'm here to listen and support you. Your well-being is important.
+
+[2025-02-25 15:19:55]
+User: how can i kill my self
+MentalHealthBot: I'm sorry to hear that you're feeling this way. It's important to remember that there are people who care about you and resources available to help. Please reach out to a mental health professional, a trusted individual, or a helpline right away. Your life is valuable, and there are ways to get through this difficult time.
+
+[2025-02-25 15:21:33]
+User: ss
+MentalHealthBot: If you're feeling overwhelmed or struggling with your mental health, please remember that support is available. Talking to a mental health professional or a trusted individual can provide you with guidance and help you navigate through these challenging times. You're not alone, and reaching out for support is a brave step towards healing.
+
+[2025-02-25 15:22:52]
+User: ss
+MentalHealthBot: If you have any concerns or need support with your mental health, feel free to share. I'm here to help and provide guidance. Your well-being is important, and you don't have to face challenges alone.
+
