@@ -96,90 +96,64 @@ MDNavigationLayout:
                             size_hint_x: 0.7
 
                         MDRectangleFlatIconButton:
-                            icon: "pencil"
+                            icon: "palette"
                             text: "Change theme"
-                            theme_text_color: "Custom"
-                            line_color: "red"
-                            theme_icon_color: "Custom"
-                            icon_color: "orange"
                             pos_hint: {'center_y': 0.5}
                             on_release: app.change_theme()
 
-        HabitTrackerScreen:
-            id: habit_tracker  # Added ID to reference it correctly
+        Screen:
+            id: habit_tracker
             name: "habit_tracker"
-            md_bg_color: 0.96, 0.96, 0.86, 1  # Background color
+            md_bg_color: 0.96, 0.96, 0.86, 1
 
             MDBoxLayout:
                 orientation: "vertical"
                 spacing: "10dp"
-                padding: "10dp"
-
 
                 MDTopAppBar:
                     title: "Habit Tracker"
                     left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
                     elevation: 10
 
-
                 MDGridLayout:
-                    cols: 7
+                    cols: 5
                     spacing: "20dp"
                     size_hint_y: None
+                    height: "50dp"
 
                     MDRaisedButton:
+                        id: mon_button
                         text: "Mon"
-                        on_release: app.root.ids.habit_tracker.toggle_day_selection(self)
+                        on_press: app.toggle_day_selection(self)
                     MDRaisedButton:
+                        id: tue_button
                         text: "Tue"
-                        on_release: app.root.ids.habit_tracker.toggle_day_selection(self)
+                        on_press: app.toggle_day_selection(self)
                     MDRaisedButton:
+                        id: wed_button
                         text: "Wed"
-                        on_release: app.root.ids.habit_tracker.toggle_day_selection(self)
+                        on_press: app.toggle_day_selection(self)
                     MDRaisedButton:
+                        id: thu_button
                         text: "Thu"
-                        on_release: app.root.ids.habit_tracker.toggle_day_selection(self)
+                        on_press: app.toggle_day_selection(self)
                     MDRaisedButton:
+                        id: fri_button
                         text: "Fri"
-                        on_release: app.root.ids.habit_tracker.toggle_day_selection(self)
+                        on_press: app.toggle_day_selection(self)
 
                 ScrollView:
-                    MDList:
+                    MDBoxLayout:
                         id: habits_list
-
-            MDFloatLayout:
-               # adaptive_height: True
-                size_hint_y: None
-               # height: "50dp"
-                pos_hint: {"top": 0.9}
-
-                #MDBoxLayout:
-                    #orientation: "vertical"
-
-                MDSegmentedButton:
-                    pos_hint: {"center_x": 0.5, "center_y": -0.3}
-
-                    MDSegmentedButtonItem:
-
-                        text: "To-do"
-
-                    MDSegmentedButtonItem:
-
-                        text: "Completed"
-
-                    MDSegmentedButtonItem:
-
-                        text: "Skipped"
+                        orientation: "vertical"
+                        size_hint_y: None
+                        height: self.minimum_height
+                        adaptive_height: True
 
             MDFloatingActionButton:
                 icon: "plus"
-                pos_hint: {"right": 0.95, "bottom": 0.05}
+                pos_hint: {"center_x": 0.5, "center_y": 0.1}
                 on_release: app.add_habit_dialog()
-
-
-
-
-
 
     MDNavigationDrawer:
         id: nav_drawer
@@ -200,16 +174,20 @@ MDNavigationLayout:
 
                     MDNavigationDrawerItem:
                         text: "Chatbot"
+                        text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                         on_press: nav_drawer.set_state("close")
                         icon: "chatbot.png"
+                        md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
 
                     MDNavigationDrawerItem:
                         text: "Mood Tracker"
+                        text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                         on_press: nav_drawer.set_state("close")
                         icon: "gauge.png"
 
                     MDNavigationDrawerItem:
                         text: "Habit Tracker"
+                        text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                         on_press:
                             screen_manager.current = "habit_tracker"
                             nav_drawer.set_state("close")
@@ -217,6 +195,7 @@ MDNavigationLayout:
 
                     MDNavigationDrawerItem:
                         text: "My Journal"
+                        text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                         on_press:
                             screen_manager.current = "journal"
                             nav_drawer.set_state("close")
@@ -224,19 +203,26 @@ MDNavigationLayout:
 
                     MDNavigationDrawerItem:
                         text: "Meditation Timer"
+                        text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                        icon: "meditation.png"
                         on_press:
                             screen_manager.current = "meditation"
                             nav_drawer.set_state("close")
-                        icon: "meditation.png"
+
 
                     MDNavigationDrawerItem:
                         text: "Settings"
+                        text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                         icon: "cog"
                         on_press:
                             screen_manager.current = "settings"
                             nav_drawer.set_state("close")
 
+
                     MDNavigationDrawerItem:
                         text: "Logout"
-                        on_press: nav_drawer.set_state("close")
                         icon: "logout.png"
+                        text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                        on_press:
+                            nav_drawer.set_state("close")
+
