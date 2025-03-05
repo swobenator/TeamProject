@@ -40,12 +40,13 @@ class MeditationScreen(Screen):
         self.timer = None #Stores the clock event for the timer
         self.current_sound = None #Initialized variable to store the currently playing sound
         self.selected_sound_path = None #Initialized variable to store the file path of selected meditation sound, e.g.,"sounds/Ocean.mp3".
+        self.alarm_sound = None
 
     def start_timer(self):
         """Starts or resumes the meditation timer and sound playback."""
         if self.timer: return  # Timer already running
 
-        self.time_left = self.time_left or 600  # Default to 10 minutes if not set
+        self.time_left = self.time_left or 5  # Default to 10 minutes if not set
         self.update_timer_label()
 
         self.stop_sound() #Stops currently playing sound
@@ -61,8 +62,9 @@ class MeditationScreen(Screen):
             self.time_left -= 1  # Decreasing time left by 1 second
             self.update_timer_label() #Updates UI dynamically
         elif self.time_left == 0 and self.timer:  # Ensures this runs only when timer was running
-            self.stop_timer()
-            self.show_end_message()
+            self.cancel_timer()#stops the timer
+            self.stop_sound()#stops the meditation sound
+            self.show_end_message()#Pop-up and play end sound
 
     def update_timer_label(self):
         """Updates the timer label in MM:SS format."""
@@ -72,10 +74,12 @@ class MeditationScreen(Screen):
 
     def show_end_message(self):
         """Displays a popup when meditation time is up."""
+        self.play_end_sound()
+
         #Close button for the dialog
         close_button = MDFlatButton(
             text="OK",
-            on_release=lambda x: self.end_dialog.dismiss(),  #Dismiss pop-up when OK is clicked
+            on_release=lambda x: self.dismiss_message(),  #Dismiss pop-up when OK is clicked
             md_bg_color=(0.2, 0.6, 0.8, 1),  #color for the button
             text_color=(1, 1, 1, 1)  #text color
         )
@@ -91,6 +95,23 @@ class MeditationScreen(Screen):
 
         # Show the popup dialog
         self.end_dialog.open()
+
+    def dismiss_message(self):
+        """Stops the alarm sound"""
+        if self.alarm_sound: #Stops alarm if it's playing
+            self.alarm_sound.stop()
+            self.alarm_sound = None # reset
+
+        if self.end_dialog:
+            self.end_dialog.dismiss()#clos the pop-up
+
+    def play_end_sound(self):
+        """Plays alarm when the session ends"""
+        end_sound_path = os.path.join(SOUNDS_FOLDER, "alarm.mp3")
+        self.alarm_sound = SoundLoader.load(end_sound_path)#Stores the instance in self.alarm_sound
+
+        if self.alarm_sound:
+            self.alarm_sound.play()#Plays the end sound
 
     def pause_timer(self):
         """Pauses the timer and sound playback but keeps the remaining time intact."""
