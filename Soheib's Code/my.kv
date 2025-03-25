@@ -1,3 +1,8 @@
+<CustomSpinnerOption>:
+    background_color: 0.2, 0.2, 0.2, 1
+    color: 1, 1, 1, 1
+    font_size: "16sp"
+    height: dp(40)
 <Label>:
     color: 0.3,0.6,0.7,1
 <Button>:
@@ -11,156 +16,18 @@
             pos: self.pos
             size: self.size
 
+
 MDNavigationLayout:
 
-    ScreenManager:
-        name: "sm"
+
+    MDScreenManager:
         id : sm
 
-
-        Screen:
-            name: "login_screen"
-            id: login_screen
-            size: root.width, root.height
-
-
-            FloatLayout:
-
-                MDTopAppBar:
-                    pos_hint: {"top": 1}
-                    title: "Login"
-
-                Label:
-                    text: "Email"
-                    font_size: 20
-                    pos_hint: {"x": -0.35, "y": 0.3 }
-
-                TextInput:
-                    id: email
-                    size_hint: 0.7, 0.05
-                    pos_hint: {"x": 0.09, "y": 0.7 }
-                    multiline: False
-
-                Label:
-                    text: "Password"
-                    font_size: 20
-                    pos_hint: {"x": -0.3, "y": 0.15 }
-
-                TextInput:
-                    id: password
-                    multiline: False
-                    size_hint: 0.7, 0.05
-                    pos_hint: {"x": 0.09, "y": 0.55 }
-
-                Button:
-                    size_hint: 0.5, 0.05
-                    pos_hint: {"x": 0.09, "y": 0.4 }
-                    text: "Login"
-                    on_press: app.login_btn()
-
-                Label:
-                    text: "Don't Have An Account?"
-                    font_size: 12
-                    pos_hint: {"x": -0.25, "y": -0.12 }
-
-                Button:
-                    size_hint: 0.5, 0.05
-                    pos_hint: {"x": 0.09, "y": 0.3 }
-                    text: "Sign Up"
-                    on_press: sm.current = 'signup_screen'
-
-        Screen:
-            name: "mood_screen"
-            id: mood_screen
-            md_bg_color: 0, 0.6, 0.4,1
-
-
-            FloatLayout:
-
-                MDTopAppBar:
-
-                    pos_hint: {"top": 1}
-                    title:"Mood Tracker"
-                    left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-
-                BoxLayout:
-                    id: graph_container
-                    orientation: "vertical"
-                    size_hint: 1, 0.6  # Controls how much space graph takes
-                    pos_hint: {"top": 0.8}  # Positioning inside parent layout
-
-        Screen:
-            name: "signup_screen"
-            id: signup_screen
-
-            MDTopAppBar:
-                pos_hint: {"top": 1}
-                title: "Sign Up"
-                left_action_items: [["back", lambda x: nav_drawer.set_state("open")]]
-
-            Label:
-                text: "First Name"
-                font_size: 20
-                pos_hint: {"x": -0.3, "top": 1.325}
-
-            TextInput:
-                id: fname
-                multiline: False
-                size_hint: 0.7, 0.05
-                pos_hint: {"x": 0.09, "y": 0.75}
-
-            Label:
-                text: "Last Name"
-                font_size: 20
-                pos_hint: {"x": -0.3, "top": 1.22}
-
-            TextInput:
-                id: lname
-                multiline: False
-                size_hint: 0.7, 0.05
-                pos_hint: {"x": 0.09, "top": 0.7 }
-
-
-            Label:
-                text: "Email"
-                font_size: 20
-                pos_hint: {"x": -0.35, "top":1.125}
-
-            TextInput:
-                id: up_email
-                size_hint: 0.7, 0.05
-                pos_hint: {"x": 0.09, "top": 0.6}
-                multiline: False
-
-            Label:
-                text: "Password"
-                font_size: 20
-                pos_hint: {"x": -0.3, "top": 1.03}
-
-            TextInput:
-                id: up_password
-                multiline: False
-                size_hint: 0.7, 0.05
-                pos_hint: {"x": 0.09, "top": 0.5 }
-
-            Label:
-                text: "Security Question: What is the name of your birthplace?"
-                font_size: 15
-                pos_hint: {"x": 0, "top": 0.92}
-
-            TextInput:
-                id: security_ans
-                multiline: False
-                size_hint: 0.7, 0.05
-                pos_hint: {"x": 0.09, "top": 0.4 }
-
-
-            Button:
-                size_hint: 0.5, 0.05
-                pos_hint: {"x": 0.09, "y": 0.2 }
-                text: "Sign Up"
-                on_press: app.up_btn()
-                on_press: sm.current = "login_screen"
+        LoginScreen:
+        MoodTrackerScreen:
+        ResetScreen:
+        SignupScreen:
+        ForgotScreen:
 
     MDNavigationDrawer:
         enable_swiping: False if sm.current == "login_screen" or sm.current == "signup_screen" else True
@@ -186,7 +53,7 @@ MDNavigationLayout:
                     text: "Chatbot"
                     icon: "chatbot.png"
                     on_press:
-                        sm.current = "chatbot_screen"  # Navigate to the meditation screen
+                        #sm.current = "chatbot"  # Navigate to the meditation screen
                         nav_drawer.set_state("close")
 
                 MDNavigationDrawerItem:
@@ -198,26 +65,27 @@ MDNavigationLayout:
                 MDNavigationDrawerItem:
                     text: "Habit Tracker"
                     icon: "habits.png"
-                    on_press: nav_drawer.set_state("close")
+                    #on_press: sm.current = "habit_screen"
+                    on_release: nav_drawer.set_state("close")
 
                 MDNavigationDrawerItem:
                     text: "My Journal"  # Navigate to the journal screen
                     icon: "journal.png"
                     on_press:
-                        #screen_manager.current = "journal"  # Navigate to the journal screen
+                        #sm.current = "journal"  # Navigate to the journal screen
                         nav_drawer.set_state("close")
 
                 MDNavigationDrawerItem:
                     text: "Meditation Timer"  # Navigate to the meditation screen
                     icon: "meditation.png"
                     on_release:
-                        sm.current = "meditation"  # Navigate to the meditation screen
+                        #sm.current = "meditation"  # Navigate to the meditation screen
                         nav_drawer.set_state("close")
 
                 MDNavigationDrawerItem:
                     text: "Settings"  # Settings item in the menu
                     icon: "settings.png"
-                    on_press: sm.current ="settings"
+                    #on_press: sm.current ="settings"
                     on_release: nav_drawer.set_state("close")
 
                 # BoxLayout at the bottom for the logout button
@@ -231,3 +99,281 @@ MDNavigationLayout:
                     icon: "logout.png"
                     on_press: sm.current ="login_screen"
                     on_press: nav_drawer.set_state("close")
+
+
+<LoginScreen>:
+    name: "login_screen"
+    #id: login_screen
+
+
+    FloatLayout:
+        MDTopAppBar:
+            pos_hint: {"top": 1}
+            title: "Login"
+
+        MDLabel:
+            text: "Email"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.75}
+            halign: "center"
+
+        MDTextField:
+            id: email
+            hint_text: "Enter your email"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.67}
+            mode: "rectangle"
+
+        MDLabel:
+            text: "Password"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.58}
+            halign: "center"
+
+        MDTextField:
+            id: password
+            hint_text: "Enter your password"
+            password: True
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            mode: "rectangle"
+
+        MDRaisedButton:
+            text: "Login"
+            md_bg_color: 0, 0.6, 0.8, 1
+            text_color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.38}
+            on_press: root.login_btn()
+
+        MDLabel:
+            text: "Don't Have An Account?"
+            font_style: "Body1"
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
+            halign: "center"
+
+        MDRaisedButton:
+            text: "Sign Up"
+            md_bg_color: 0.1, 0.6, 0.2, 1
+            text_color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.23}
+            on_press: app.root.ids.sm.current = "signup_screen"
+
+        MDRaisedButton:
+            text: "Forgot Password?"
+            md_bg_color: 0.8, 0.3, 0, 1
+            text_color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.15}
+            on_press:  app.root.ids.sm.current = "forgot_screen"
+
+
+
+<MoodTrackerScreen>:
+    name: "mood_screen"
+    id: mood_screen
+    md_bg_color: 0, 0.6, 0.4,1
+
+
+    FloatLayout:
+
+        MDTopAppBar:
+
+            pos_hint: {"top": 1}
+            title:"Mood Tracker"
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+
+        Spinner:
+            id: week_spinner
+            text: "Select a Week"
+            values: []
+            size_hint: (0.6, 0.1)
+            pos_hint: {"center_x": 0.5, "top": 0.9}
+            on_text: root.plot_graph(self.text)
+            background_color: 0, 0.4, 0, 1
+            color: 1, 1, 1, 1
+            font_size: "18sp"
+            option_cls: "CustomSpinnerOption"
+
+        BoxLayout:
+            id: graph_container
+            orientation: "vertical"
+            size_hint: 1, 0.6
+            pos_hint: {"top": 0.8}
+
+
+<ResetScreen>:
+    name: "reset_screen"
+
+
+    FloatLayout:
+        MDTopAppBar:
+            pos_hint: {"top": 1}
+            title: "Reset Your Password"
+            left_action_items: [["arrow-left", lambda x: app.goto_login()]]
+
+        MDLabel:
+            text: "New Password"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.75}
+            halign: "center"
+
+        MDTextField:
+            id: new_password
+            hint_text: "Enter new password"
+            password: True
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.67}
+            mode: "rectangle"
+
+        MDLabel:
+            text: "Confirm Password"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.58}
+            halign: "center"
+
+        MDTextField:
+            id: confirm_password
+            hint_text: "Re-enter new password"
+            password: True
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            mode: "rectangle"
+
+        MDRaisedButton:
+            text: "Reset Password"
+            md_bg_color: 0, 0.6, 0.8, 1
+            text_color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.35}
+            on_release: root.reset_password()
+
+<ForgotScreen>:
+    name: "forgot_screen"
+
+    FloatLayout:
+    MDTopAppBar:
+        pos_hint: {"top": 1}
+        title: "Reset Password"
+        left_action_items: [["arrow-left", lambda x: app.goto_login()]]
+
+    MDLabel:
+        text: "Email"
+        font_style: "H6"
+        pos_hint: {"center_x": 0.5, "center_y": 0.85}
+        halign: "center"
+
+    MDTextField:
+        id: f_email
+        hint_text: "Enter your email"
+        size_hint_x: 0.8
+        pos_hint: {"center_x": 0.5, "center_y": 0.75}
+        mode: "rectangle"
+
+    MDLabel:
+        text: "Security Question: What is the name of your birthplace?"
+        font_style: "H6"
+        size_hint_x: 0.8
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        halign: "center"
+
+    MDTextField:
+        id: f_security
+        hint_text: "Enter your answer"
+        size_hint_x: 0.8
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        mode: "rectangle"
+
+    MDRaisedButton:
+        text: "Reset Password"
+        md_bg_color: 1, 0, 0, 1
+        text_color: 1, 1, 1, 1
+        size_hint_x: 0.5
+        pos_hint: {"center_x": 0.5, "center_y": 0.35}
+        on_press: root.verify_security()
+
+
+<SignupScreen>:
+    name: "signup_screen"
+
+    FloatLayout:
+        MDTopAppBar:
+            pos_hint: {"top": 1}
+            title: "Sign Up"
+            left_action_items: [["arrow-left", lambda x: app.goto_login()]]
+
+        MDLabel:
+            text: "First Name"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.88}
+            halign: "center"
+
+        MDTextField:
+            id: fname
+            hint_text: "Enter your first name"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.8}
+            mode: "rectangle"
+
+        MDLabel:
+            text: "Last Name"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.72}
+            halign: "center"
+
+        MDTextField:
+            id: lname
+            hint_text: "Enter your last name"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.64}
+            mode: "rectangle"
+
+        MDLabel:
+            text: "Email"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.56}
+            halign: "center"
+
+        MDTextField:
+            id: up_email
+            hint_text: "Enter your email"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.48}
+            mode: "rectangle"
+
+        MDLabel:
+            text: "Password"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.4}
+            halign: "center"
+
+        MDTextField:
+            id: up_password
+            hint_text: "Enter your password"
+            password: True
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.32}
+            mode: "rectangle"
+
+        MDLabel:
+            text: "Security Question: What is the name of your birthplace?"
+            font_style: "Body1"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.24}
+            halign: "center"
+
+        MDTextField:
+            id: security_ans
+            hint_text: "Enter your answer"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.16}
+            mode: "rectangle"
+
+        MDRaisedButton:
+            text: "Sign Up"
+            md_bg_color: 0, 0.6, 0.8, 1
+            text_color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.06}
+            on_press: root.up_btn()

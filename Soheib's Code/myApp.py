@@ -8,18 +8,20 @@ from kivymd.app import MDApp
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.storage.jsonstore import JsonStore
-from datetime import datetime
+import datetime
 from kivy_garden.matplotlib import FigureCanvasKivyAgg
 import matplotlib.pyplot as plt
-
+from kivymd.toast import toast
+from kivymd.uix.screen import MDScreen
+from kivymd.uix.screenmanager import MDScreenManager
+from kivy.uix.spinner import SpinnerOption
 
 Window.size = (400, 720)
-
 
 mydb = mysql.connector.connect(
   host="127.0.0.1",
   user="root",
-  password="PUT_PASSWORD_IN_HERE",
+  password="sweeb321",
   database="python",
   auth_plugin="mysql_native_password"
 )
@@ -29,20 +31,40 @@ mycursor = mydb.cursor()
 sql_sign_up = "INSERT INTO python.users(email, password, fname, lname, security_ans) VALUES (%s, %s, %s, %s, %s)"
 sql_sign_in = "SELECT * FROM python.users WHERE email=%s and  password= %s"
 
-SOUNDS_FOLDER = "sounds_folder"
+
+class CustomSpinnerOption(SpinnerOption):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.background_color = (0, 0.2, 0, 1)
+        self.color = (1, 1, 1, 1)
+        self.font_size = "16sp"
+        self.height = 40
 
 
-class myApp(MDApp):
-    def build(self):
+class MoodTrackerScreen(MDScreen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.store = JsonStore("daily_popup.json")
-        return Builder.load_file("my.kv")
 
-    def on_start(self):
-        self.plot_graph()
+    def on_load(self):
+        try:
+            with open("data.json", "r") as f:
+                mood_data = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            mood_data = {}
 
+        available_weeks = sorted(mood_data.keys())  # Get all stored weeks
+
+        if available_weeks:
+            self.ids.week_spinner.values = available_weeks  # Update Spinner
+            self.plot_graph(available_weeks[-1])
+
+    def goto_login(self):
+        self.root.ids.sm.current = "login_screen"
 
     def show_popup(self):
-        today = datetime.today().strftime("%Y-%m-%d")
+
+        today = datetime.datetime.today().strftime("%Y-%m-%d")
 
         if not self.store.exists("last_shown") or self.store.get("last_shown")["date"] != today:
             layout = BoxLayout(orientation="vertical", padding=20, spacing=10)
@@ -79,23 +101,13 @@ class myApp(MDApp):
                 background_color=(0, 0, 0, 1)
             )
             self.popup.open()
-            # Save today's date to prevent showing the popup again today
+
             self.store.put("last_shown", date=today)
 
     def icon_click(self, instance, mood_value):
-        """Stores the selected mood into the JSON file based on the current day."""
-        day_mapping = {
-            "Monday": 1,
-            "Tuesday": 2,
-            "Wednesday": 3,
-            "Thursday": 4,
-            "Friday": 5,
-            "Saturday": 6,
-            "Sunday": 7
-        }
-
-        today_name = datetime.today().strftime("%A")  # Find out what today is i.e Monday
-        day_number = day_mapping[today_name]  # Convert to a number (1-7)
+        today = datetime.datetime.today()
+        week_key = today.strftime("%Y-W%U")
+        day_number = today.isoweekday()
 
         try:
             with open("data.json", "r") as f:
@@ -103,69 +115,24 @@ class myApp(MDApp):
         except (FileNotFoundError, json.JSONDecodeError):
             mood_data = {}
 
-        mood_data[str(day_number)] = mood_value  # Store mood with the day number as the key
+        if week_key not in mood_data:
+            mood_data[week_key] = {}
+
+        mood_data[week_key][str(day_number)] = mood_value  # Store mood
 
         with open("data.json", "w") as f:
-            json.dump(mood_data, f, indent=4)  # Save back to the json file
+            json.dump(mood_data, f, indent=4)
 
-        print(f"Stored mood {mood_value} for {today_name} (Day {day_number})")
+        available_weeks = sorted(mood_data.keys())
 
+        print(f"Stored mood {mood_value} for {week_key}, Day {day_number}")
         self.popup.dismiss()
-        self.plot_graph()  # Update the graph after saving
+        if available_weeks:
+            self.ids.week_spinner.values = available_weeks  # Update Spinner
+            self.plot_graph(available_weeks[-1])
 
+    def plot_graph(self, selected_week):
 
-    def login_btn(self):
-        email = self.root.ids.email
-        password = self.root.ids.password
-
-        if email.text == "" or password.text == "":
-            print("Please Fill in Both Fields")
-
-        else:
-            print("Email: ", email.text, "\nPassword:", password.text)
-            values = (email.text, password.text)
-            print(mycursor.execute(sql_sign_in, values))
-            print("Successfully Signed Up")
-            result = mycursor.fetchone()
-
-            email.text = ""
-            password.text = ""
-
-            if result:
-                print("Login Successful")
-                self.root.ids.sm.current = "mood_screen"
-                self.show_popup()
-                email.text = ""
-                password.text = ""
-            else:
-                print("Invalid Login Details")
-
-
-    def up_btn(self):
-        email = self.root.ids.up_email
-        password = self.root.ids.up_password
-        fname = self.root.ids.fname
-        lname = self.root.ids.lname
-        security_ans = self.root.ids.security_ans
-
-        password_input = password.text
-
-        if email.text == "" or password.text == "" or fname.text == "" or lname.text == "" or security_ans.text == "":
-            print("Please Fill in All Fields")
-
-        elif len(password_input) < 8:
-            print("Password Too Short!")
-            return
-
-        else:
-            print("Email: ", email.text, "\nPassword:", password.text)
-            values = (email.text, password.text, fname.text, lname.text, security_ans.text)
-            mycursor.execute(sql_sign_up, values)
-            mydb.commit()
-            print("Successfully Signed Up")
-            email.text = ""
-            password.text = ""
-    def plot_graph(self):
         try:
             with open("data.json", "r") as f:
                 mood_data = json.load(f)
@@ -174,36 +141,171 @@ class myApp(MDApp):
 
         day_mapping = {1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: "Sat", 7: "Sun"}
 
-        # Sort data and get lists for plotting
-        days = sorted(mood_data.keys(), key=int)
-        moods = [mood_data[day] for day in days]
+        if selected_week not in mood_data:
+            print(f"No data available for {selected_week}")
+            return
 
-        # Convert day numbers to labels
+        weekly_moods = mood_data[selected_week]
+
+        days = sorted(weekly_moods.keys(), key=int)
+        moods = [weekly_moods[day] for day in days]
         day_labels = [day_mapping[int(day)] for day in days]
 
-        # Create figure
         fig, ax = plt.subplots()
         ax.plot(day_labels, moods, marker="o", linestyle="-", color="green", linewidth=2)
 
-        # Set labels and grid
         ax.set_xlabel("Days")
         ax.set_ylabel("Mood")
-        ax.set_title("Mood Tracker")
+        ax.set_title(f"Mood Tracker - {selected_week}")
         ax.grid(True)
 
-        # Clear previous graph and add new one
-        graph_container = self.root.ids.graph_container
+        graph_container = self.ids.graph_container
         graph_container.clear_widgets()
         graph_container.add_widget(FigureCanvasKivyAgg(fig))
 
-    #graph.add_plot(plot)
-
-    def clearGraph(self):
-        graph = self.root.ids.graph
-
-        for x in graph.plots[:]:
-            graph.remove_plot(x)
+    # def clearGraph(self):
+    #     graph = self.root.ids.graph
+    #
+    #     for x in graph.plots[:]:
+    #         graph.remove_plot(x)
 
 
-app = myApp()
-app.run()
+class ResetScreen(MDScreen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def reset_password(self):
+        new_password = self.ids.new_password.text.strip()
+        confirm_password = self.ids.confirm_password.text.strip()
+
+        if not new_password or not confirm_password:
+            toast("Please enter both password fields!")
+            return
+
+        if new_password != confirm_password:
+            toast("Passwords do not match!")
+            return
+
+        try:
+            reset_screen = self.ids.sm.get_screen("reset_screen")
+            email = reset_screen.user_email
+            mycursor.execute("UPDATE users SET password = %s WHERE email = %s", (new_password, email))
+            mydb.commit()
+            toast("Password reset successful! Please log in.")
+            self.root.ids.sm.current = "login_screen"
+
+        except mysql.connector.Error as err:
+            toast(f"Database Error: {err}")
+
+
+class LoginScreen(MDScreen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def login_btn(self):
+        email = self.ids.email
+        password = self.ids.password
+
+        if email == "" or password == "":
+            print("Please Fill in Both Fields")
+
+        else:
+            values = (email.text.strip(), password.text.strip())
+            print(mycursor.execute(sql_sign_in, values))
+
+            result = mycursor.fetchone()
+
+            email.text = ""
+            password.text = ""
+
+            if result:
+                toast("Login Successful", background=[0.2, 1, 0.2, 1])
+
+                app = MDApp.get_running_app()
+                app.root.ids.sm.current = "mood_screen"
+
+                mood_tracker_screen = app.root.ids.sm.get_screen("mood_screen")
+                mood_tracker_screen.on_start()
+                email.text = ""
+                password.text = ""
+            else:
+                toast("Invalid Login Details", background=[1, 0, 0, 0.5])
+
+
+class ForgotScreen(MDScreen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def verify_security(self):
+        email = self.ids.f_email.text.strip()
+        security_ans = self.ids.f_security.text.strip()
+
+        if not email or not security_ans:
+            toast("Please fill in all fields!")
+            return
+
+        try:
+            mycursor.execute("SELECT * FROM users WHERE email = %s AND security_ans = %s", (email, security_ans))
+            result = mycursor.fetchone()
+
+            if result:
+                toast("Verification successful!")
+                reset_screen = self.ids.sm.get_screen("reset_screen")
+                reset_screen.user_email = email
+                self.ids.sm.current = "reset_screen"
+            else:
+                toast("Incorrect details! Try again.")
+
+        except mysql.connector.Error as err:
+            toast(f"Database Error: {err}")
+
+
+class SignupScreen(MDScreen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def up_btn(self):
+        email = self.ids.up_email
+        password = self.ids.up_password
+        fname = self.ids.fname
+        lname = self.ids.lname
+        security_ans = self.ids.security_ans
+
+        # password_input = password.text.strip()
+
+        if email.text == "" or password.text == "" or fname.text == "" or lname.text == "" or security_ans.text == "":
+            print("Please Fill in All Fields")
+
+        elif len(password.text) < 8:
+            print("Password Too Short!")
+            return
+
+        else:
+            values = (email.text.strip(), password.text.strip(), fname.text.strip(), lname.text.strip(), security_ans.text.strip())
+            mycursor.execute(sql_sign_up, values)
+            mydb.commit()
+            toast("Successfully Signed Up")
+            email.text = ""
+            password.text = ""
+
+
+class MainApp(MDApp):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.store = JsonStore("daily_popup.json")
+
+    def build(self):
+        root = Builder.load_file("main.kv")
+        return root
+
+    def goto_login(self):
+        print("Login button clicked")
+        self.root.ids.sm.current = "login_screen"
+
+    def on_start(self):
+        mood_tracker_screen = self.root.ids.sm.get_screen("mood_screen")
+        mood_tracker_screen.on_load()
+
+
+main_app = MainApp()
+main_app.run()
