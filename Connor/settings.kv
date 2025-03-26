@@ -2,6 +2,8 @@ MDNavigationLayout:
     ScreenManager:
         id: screen_manager
 
+        MeditationScreen:
+
         SettingsScreen:
             name: "settings"
             md_bg_color: app.theme_cls.bg_normal
@@ -104,11 +106,11 @@ MDNavigationLayout:
         Screen:
             id: habit_tracker
             name: "habit_tracker"
-            md_bg_color: 0.96, 0.96, 0.86, 1
 
             MDBoxLayout:
                 orientation: "vertical"
                 spacing: "10dp"
+                md_bg_color: 0.96, 0.96, 0.86, 1
 
                 MDTopAppBar:
                     title: "Habit Tracker"
@@ -169,6 +171,8 @@ MDNavigationLayout:
                 size_hint_y: None
                 height: self.texture_size[1]
 
+
+
             ScrollView:
                 MDList:
 
@@ -226,3 +230,139 @@ MDNavigationLayout:
                         on_press:
                             nav_drawer.set_state("close")
 
+
+# -----------------------------
+# Meditation Screen Layout
+# -----------------------------
+
+<MeditationScreen>:
+    name: "meditation"
+
+    FloatLayout:
+        # Fixed top app bar for the meditation screen.
+        MDTopAppBar:
+            title: "Meditation Timer"
+            elevation: 3
+            size_hint_y: None
+            height: "56dp"
+            pos_hint: {"top": 1}
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+
+        # Meditation instructions near the top.
+        MDLabel:
+            text: "[b]Time to Meditate"
+            markup: True
+            text_color: 0.2, 0.6, 0.8, 1
+            halign: "center"
+            font_style: "H4"
+            size_hint: (1, None)
+            height: "40dp"
+            pos_hint: {"top": 0.88}
+
+        # A rectangle timer display using MDCard with custom canvas instructions.
+        MDCard:
+            size_hint: (None, None)
+            size: ("300dp", "150dp")
+            pos_hint: {"center_x": 0.5, "center_y": 0.66}
+            elevation: 4
+            md_bg_color: 0, 0, 0, 0 #Transparent background
+            canvas.before:
+                # Outer rectangle (blue)
+                Color:
+                    rgba: 0.4, 0.7, 0.7, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(20), dp(20), dp(20), dp(20)]
+                # Inner rectangle (purple) to create a border effect.
+                Color:
+                    rgba: 0.8, 0.9, 0.9, 1
+                RoundedRectangle:
+                    pos: (self.x + dp(20), self.y + dp(20))
+                    size: (self.width - dp(40), self.height - dp(40))
+                    radius: [dp(15), dp(15), dp(15), dp(15)]
+
+            # The timer label is centered within the rectangular card.
+            FloatLayout:
+                MDLabel:
+                    id: timer_label
+                    text: root.timer_label_text #Dynamically updates based on the timer.
+                    halign: "center"
+                    font_style: "H2"
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+
+        # Timer control buttons (Start & Reset) below the circle.
+        MDBoxLayout:
+            orientation: "horizontal"
+            spacing: "20dp"
+            size_hint: (None, None)
+            height: "1dp"
+            width: "200dp"
+            pos_hint: {"center_x": 0.43, "center_y": 0.46}
+
+            MDRaisedButton:
+                text: "Start"
+                md_bg_color: 0.2, 0.4, 0.8, 1
+                text_color: 1, 1, 1, 1
+                font_size: "18sp"
+                bold: True
+                on_press: root.start_timer()
+
+            MDRaisedButton:
+                text: "Pause"
+                md_bg_color: 1, 0.7, 0, 1
+                text_color: 1, 1, 1, 1
+                font_size: "18sp"
+                bold: True
+                on_press: root.pause_timer()
+
+            MDRaisedButton:
+                text: "Reset"
+                md_bg_color: 1, 0.3, 0.3, 1
+                text_color: 1, 1, 1, 1
+                font_size: "18sp"
+                bold: True
+                on_press: root.reset_timer()
+
+        # Label for the meditation sound options.
+        MDLabel:
+            text: "Choose Your Meditation Sounds"
+            halign: "center"
+            size_hint: (1, None)
+            height: "40dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.35}
+            font_style: "H6"
+
+        # BoxLayout containing buttons for sound selection.
+        MDGridLayout:
+            cols: 2
+            spacing: "10dp"
+            size_hint: (None, None)
+            width: "280dp"
+            height: "140dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+
+            # Each MDFillRoundFlatIconButton calls the select_sound method in MeditationScreen.
+            MDFillRoundFlatIconButton:
+                icon: "wave.png"
+                text: "Ocean Waves"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Ocean.mp3")
+            MDFillRoundFlatIconButton:
+                icon: "rain.png"
+                text: "Rain Sounds"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Rain.mp3")
+            MDFillRoundFlatIconButton:
+                icon: "bowl.png"
+                text: "Tibetan Bowl"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Bowl.mp3")
+            MDFillRoundFlatIconButton:
+                icon: "bonfire.png"
+                text: "Fire Crackles"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Bonfire.mp3")
