@@ -1,5 +1,5 @@
 <CustomSpinnerOption>:
-    background_color: 0.2, 0.2, 0.2, 1
+    background_color: 0.2, 0.2, 0.5, 1
     color: 1, 1, 1, 1
     font_size: "16sp"
     height: dp(40)
@@ -72,7 +72,7 @@ MDNavigationLayout:
                     text: "My Journal"  # Navigate to the journal screen
                     icon: "journal.png"
                     on_press:
-                        #sm.current = "journal"  # Navigate to the journal screen
+                        sm.current = "journal"  # Navigate to the journal screen
                         nav_drawer.set_state("close")
 
                 MDNavigationDrawerItem:
@@ -103,7 +103,7 @@ MDNavigationLayout:
 
 <LoginScreen>:
     name: "login_screen"
-    #id: login_screen
+    id: login_screen
 
 
     FloatLayout:
@@ -122,7 +122,9 @@ MDNavigationLayout:
             hint_text: "Enter your email"
             size_hint_x: 0.8
             pos_hint: {"center_x": 0.5, "center_y": 0.67}
-            mode: "rectangle"
+            mode: "fill"  # Try "line" or "fill" instead of "rectangle"
+            helper_text_mode: "on_focus"  # Ensures hint text behaves correctly
+            on_focus: if not self.focus: self.text = self.text  # Force UI update
 
         MDLabel:
             text: "Password"
@@ -136,10 +138,13 @@ MDNavigationLayout:
             password: True
             size_hint_x: 0.8
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            mode: "rectangle"
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
 
         MDRaisedButton:
             text: "Login"
+            id: login_btn
             md_bg_color: 0, 0.6, 0.8, 1
             text_color: 1, 1, 1, 1
             size_hint_x: 0.5
@@ -173,8 +178,6 @@ MDNavigationLayout:
 <MoodTrackerScreen>:
     name: "mood_screen"
     id: mood_screen
-    md_bg_color: 0, 0.6, 0.4,1
-
 
     FloatLayout:
 
@@ -191,7 +194,7 @@ MDNavigationLayout:
             size_hint: (0.6, 0.1)
             pos_hint: {"center_x": 0.5, "top": 0.9}
             on_text: root.plot_graph(self.text)
-            background_color: 0, 0.4, 0, 1
+            background_color: 0, 0.2, 0, 1
             color: 1, 1, 1, 1
             font_size: "18sp"
             option_cls: "CustomSpinnerOption"
@@ -225,7 +228,9 @@ MDNavigationLayout:
             password: True
             size_hint_x: 0.8
             pos_hint: {"center_x": 0.5, "center_y": 0.67}
-            mode: "rectangle"
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
 
         MDLabel:
             text: "Confirm Password"
@@ -239,7 +244,9 @@ MDNavigationLayout:
             password: True
             size_hint_x: 0.8
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            mode: "rectangle"
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
 
         MDRaisedButton:
             text: "Reset Password"
@@ -269,7 +276,9 @@ MDNavigationLayout:
         hint_text: "Enter your email"
         size_hint_x: 0.8
         pos_hint: {"center_x": 0.5, "center_y": 0.75}
-        mode: "rectangle"
+        mode: "fill"
+        helper_text_mode: "on_focus"
+        on_focus: if not self.focus: self.text = self.text
 
     MDLabel:
         text: "Security Question: What is the name of your birthplace?"
@@ -283,7 +292,9 @@ MDNavigationLayout:
         hint_text: "Enter your answer"
         size_hint_x: 0.8
         pos_hint: {"center_x": 0.5, "center_y": 0.5}
-        mode: "rectangle"
+        mode: "fill"
+        helper_text_mode: "on_focus"
+        on_focus: if not self.focus: self.text = self.text
 
     MDRaisedButton:
         text: "Reset Password"
@@ -314,7 +325,9 @@ MDNavigationLayout:
             hint_text: "Enter your first name"
             size_hint_x: 0.8
             pos_hint: {"center_x": 0.5, "center_y": 0.8}
-            mode: "rectangle"
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
 
         MDLabel:
             text: "Last Name"
@@ -327,7 +340,9 @@ MDNavigationLayout:
             hint_text: "Enter your last name"
             size_hint_x: 0.8
             pos_hint: {"center_x": 0.5, "center_y": 0.64}
-            mode: "rectangle"
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
 
         MDLabel:
             text: "Email"
@@ -340,7 +355,9 @@ MDNavigationLayout:
             hint_text: "Enter your email"
             size_hint_x: 0.8
             pos_hint: {"center_x": 0.5, "center_y": 0.48}
-            mode: "rectangle"
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
 
         MDLabel:
             text: "Password"
@@ -354,7 +371,9 @@ MDNavigationLayout:
             password: True
             size_hint_x: 0.8
             pos_hint: {"center_x": 0.5, "center_y": 0.32}
-            mode: "rectangle"
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
 
         MDLabel:
             text: "Security Question: What is the name of your birthplace?"
@@ -368,7 +387,9 @@ MDNavigationLayout:
             hint_text: "Enter your answer"
             size_hint_x: 0.8
             pos_hint: {"center_x": 0.5, "center_y": 0.16}
-            mode: "rectangle"
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
 
         MDRaisedButton:
             text: "Sign Up"
@@ -377,3 +398,5 @@ MDNavigationLayout:
             size_hint_x: 0.5
             pos_hint: {"center_x": 0.5, "center_y": 0.06}
             on_press: root.up_btn()
+
+
