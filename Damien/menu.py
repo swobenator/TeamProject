@@ -13,12 +13,14 @@ import json
 from kivymd.uix.dialog import MDDialog #This shows the pop-up
 from kivymd.uix.button import MDFlatButton #Used this for a button in the pop-up
 from kivymd.uix.list import OneLineListItem
-from kivymd.uix.button import MDRaisedButton
-from kivy.uix.textinput import TextInput
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.popup import Popup
-from functools import partial
+from kivymd.uix.card import (
+    MDCardSwipe,  MDCardSwipeLayerBox, MDCardSwipeFrontBox
+)
+from kivymd.uix.boxlayout import MDBoxLayout
 from datetime import datetime
+from kivy.uix.scrollview import ScrollView
+from kivymd.uix.textfield import MDTextField
+import uuid #Genrates unique identifiers (UUIDS) to uniquely identify items
 
 
 Window.size = (400, 720)  # Set the window size for mobile-friendly resolution.
@@ -46,7 +48,7 @@ class MeditationScreen(Screen):
         """Starts or resumes the meditation timer and sound playback."""
         if self.timer: return  # Timer already running
 
-        self.time_left = self.time_left or 5  # Default to 10 minutes if not set
+        self.time_left = self.time_left or 600  # Default to 10 minutes if not set
         self.update_timer_label()
 
         self.stop_sound() #Stops currently playing sound
@@ -59,9 +61,9 @@ class MeditationScreen(Screen):
     def update_time(self, dt):
         """Updates the timer each second."""
         if self.time_left > 0:
-            self.time_left -= 1  # Decreasing time left by 1 second
+            self.time_left -= 1  #Decreasing time left by 1 second
             self.update_timer_label() #Updates UI dynamically
-        elif self.time_left == 0 and self.timer:  # Ensures this runs only when timer was running
+        elif self.time_left == 0 and self.timer:  #Ensures this runs only when timer was running
             self.cancel_timer()#stops the timer
             self.stop_sound()#stops the meditation sound
             self.show_end_message()#Pop-up and play end sound
@@ -166,118 +168,243 @@ class MeditationScreen(Screen):
 
 class JournalScreen(Screen):
     def __init__(self, **kwargs):
+        """Initializes the journal screen and loads saved entries from file"""
         super().__init__(**kwargs)
-        self.entries = []
-        self.archived_entries = []
-        self.show_archived = False
-        self.dialog = None
-        self.load_entries()
+        self.entries = []#Holds all journal entries (active and archived)
+        self.archive_view = False#viewing archived entries
+        self.load_entries()#Load existing entries on start
 
-    def on_pre_enter(self):
-        self.update_journal_list()
+    def on_kv_post(self, base_widget):
+        #update the list view after the UI is loaded.
+        self.update_rv_data()
 
     def load_entries(self):
-        """Loads journal entries from the JSON file."""
-        try:
-            with open(JOURNAL_FILE, 'r') as file:
-                data = json.load(file)
-                self.entries = data.get("entries", [])
-                self.archived_entries = data.get("archived_entries", [])
-        except (FileNotFoundError, json.JSONDecodeError):
-            # If the file doesn't exist or is corrupted, start with empty lists
-            self.entries = []
-            self.archived_entries = []
-
-    def save_entry(self):
-        entry_text = self.ids.journal_input.text
-        if entry_text:
-            creation_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            entry = {'text': entry_text, 'date': creation_date, 'archived': False}
-            self.entries.append(entry)
-            self.ids.journal_input.text = ''
-            self.update_journal_list()
-            self.save_entries_to_file()  # Save changes
-
-    def update_journal_list(self):
-        self.ids.journal_list.clear_widgets()
-        entries_to_display = self.archived_entries if self.show_archived else self.entries
-
-        if self.show_archived and not entries_to_display:
-            no_archive_item = OneLineListItem(text="No archived entries.")
-            self.ids.journal_list.add_widget(no_archive_item)
+        #load journal entries from a JSON file if it exist
+        if os.path.exists(JOURNAL_FILE):
+            with open(JOURNAL_FILE, "r") as f:
+                self.entries = json.load(f)
         else:
-            for entry in entries_to_display:
-                list_item = OneLineListItem(
-                    text=f"{entry['date']}: {entry['text'][:30]}...",
-                )
-                list_item.bind(on_release=partial(self.edit_entry, entry))
-                self.ids.journal_list.add_widget(list_item)
+            self.entries = []#fallback: start with empty list
 
-    def edit_entry(self, entry, instance):
-        content = BoxLayout(orientation='vertical', spacing="10dp")
-        text_input = TextInput(text=entry['text'], multiline=True)
-        content.add_widget(text_input)
+    def save_entries(self):
+        #Save current list of entries to a JSON file
+        with open(JOURNAL_FILE, "w") as f:
+            json.dump(self.entries, f)
 
-        content.add_widget(MDRaisedButton(
-            text="Save Edited Entry",
-            on_release=partial(self.save_edited_entry, entry, text_input)
-        ))
-
-        content.add_widget(MDRaisedButton(
-            text="Archive Entry", on_release=partial(self.confirm_archive_entry, entry)
-        ))
-
-        self.popup = Popup(title="Edit Entry", content=content, size_hint=(0.8, 0.8))
-        self.popup.open()
-
-    def save_edited_entry(self, entry, text_input, btn=None):
-        entry['text'] = text_input.text
-        self.popup.dismiss()
-        self.update_journal_list()
-        self.save_entries_to_file()  # Save changes
-
-    def confirm_archive_entry(self, entry, btn=None):
-        if not self.dialog:
-            self.dialog = MDDialog(
-                title="Confirm Archive",
-                text="Are you sure you want to archive this entry?",
-                buttons=[
-                    MDFlatButton(text="CANCEL", on_release=self.dismiss_dialog),
-                    MDFlatButton(text="CONFIRM", on_release=partial(self.archive_entry, entry))
-                ],
-            )
-        self.dialog.open()
-
-    def dismiss_dialog(self, instance):
-        self.dialog.dismiss()
-
-    def archive_entry(self, entry, btn=None):
-        if entry in self.entries:
-            self.entries.remove(entry)
-            self.archived_entries.append(entry)
+    def update_rv_data(self):
+        #update the list view data based on whether archived entries are shown
+        if self.archive_view:
+            #filtering archived entries only
+            data = [e for e in self.entries if e.get("archived", False)]
+            self.ids.archive_label.opacity = 1 if not data else 0#show message if no archived entries
         else:
-            self.archived_entries.remove(entry)
-            self.entries.append(entry)
+            #flitering active entries only
+            data = [e for e in self.entries if not e.get("archived", False)]
+            self.ids.archive_label.opacity = 0#hide label in active mode
 
-        self.dismiss_dialog(None)
-        self.popup.dismiss()
-        self.update_journal_list()
-        self.save_entries_to_file()  # Save changes
+        self.ids.rv.data = data#update the RecycleView's data
 
-    def toggle_archive(self):
-        self.show_archived = not self.show_archived
-        # Update the toggle button text via its id.
-        self.ids.archive_toggle_button.text = "Back to Journal" if self.show_archived else "View Archived Entries"
-        self.update_journal_list()
 
-    def save_entries_to_file(self):
-        """Saves the current journal entries to the JSON file."""
-        data = {
-            "entries": self.entries,
-            "archived_entries": self.archived_entries,
-        }
-        with open(JOURNAL_FILE, 'w') as file:
-            json.dump(data, file, indent=4)
+    def add_entry(self):
+        """Adds a new journal entry from the text input. Uses .strip() to prevent blank entries with only whitespace."""
+        entry_text = self.ids.entry_text.text
+        if entry_text.strip(): #using .strip() to check for non-empty text
+            new_entry = {
+                "entry_id": str(uuid.uuid4()),#generate a unique ID for the entry
+                "text": entry_text,
+                "date": datetime.now().strftime("%b %d, %Y • %I:%M %p"),
+                "archived": False,#default is active, not archived
+            }
+            self.entries.append(new_entry)#append new enetry to the list
+            self.save_entries()#write changes to file
+            self.update_rv_data()#refresh the RecycleView
+            self.ids.entry_text.text = ""#clear text input
+
+    def remove_entry(self, entry_id):
+        """Deletes a journal entry using its unique ID. Uses a list comprehension to filter out the matching entry."""
+        self.entries = [e for e in self.entries if e["entry_id"] != entry_id]#remove the entry
+        self.save_entries()
+        self.update_rv_data()
+
+    def archive_entry(self, entry_id):
+        """Marks an entry as archived so it no longer shows in active view.Looping through entries to find a match by ID."""
+        for e in self.entries:#looping through all entries
+            if e["entry_id"] == entry_id:
+                e["archived"] = True#set as archived
+                break
+        self.save_entries()
+        self.update_rv_data()
+
+    def toggle_archive_view(self):
+        """Switches between viewing active and archived entries.Also updates the button label accordingly."""
+        self.archive_view = not self.archive_view #Flip the view mode
+        self.ids.toggle_archive_btn.text = (
+            "Back to Journal" if self.archive_view else "View Archive"
+        )
+        self.update_rv_data()
+
+    def open_entry_dialog(self, entry_id):
+        """Opens a popup dialog to view/edit an entry’s text.Finds the entry using its unique ID."""
+        entry_to_edit = next((e for e in self.entries if e["entry_id"] == entry_id), None)#find the entry with matching ID
+        if not entry_to_edit:
+            return#entry not found, do nothing
+
+        #layout for the popup content
+        container = MDBoxLayout(orientation="vertical", size_hint_y=None, height="300dp")
+        scroll = ScrollView()
+        text_field = MDTextField(
+            text=entry_to_edit["text"],
+            multiline=True,
+            size_hint_y=None,
+            height="300dp"
+        )
+        scroll.add_widget(text_field)
+        container.add_widget(scroll)
+
+        #define save button action
+        def on_save(instance):
+            entry_to_edit["text"] = text_field.text#update entry text
+            self.save_entries() #save to file
+            self.update_rv_data() #refresh entry list
+            dialog.dismiss() #close the popup
+
+        #define cancel button action
+        def on_cancel(instance):
+            dialog.dismiss()
+
+        dialog = MDDialog(
+            title="View / Edit Entry",
+            type="custom",
+            content_cls=container,
+            buttons=[
+                MDFlatButton(text="Cancel", on_release=on_cancel),
+                MDFlatButton(text="Save", on_release=on_save)
+            ]
+        )
+        dialog.open()
+
+
+# class JournalScreen(Screen):
+#     def __init__(self, **kwargs):
+#         super().__init__(**kwargs)
+#         self.entries = []
+#         self.archived_entries = []
+#         self.show_archived = False
+#         self.dialog = None
+#         self.load_entries()
+#
+#     def on_pre_enter(self):
+#         self.update_journal_list()
+#
+#     def load_entries(self):
+#         """Loads journal entries from the JSON file."""
+#         try:
+#             with open(JOURNAL_FILE, 'r') as file:
+#                 data = json.load(file)
+#                 self.entries = data.get("entries", [])
+#                 self.archived_entries = data.get("archived_entries", [])
+#         except (FileNotFoundError, json.JSONDecodeError):
+#             # If the file doesn't exist or is corrupted, start with empty lists
+#             self.entries = []
+#             self.archived_entries = []
+#
+#     def save_entry(self):
+#         """Saves a new entry journal"""
+#         entry_text = self.ids.journal_input.text
+#         if entry_text:
+#             creation_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#             entry = {'text': entry_text, 'date': creation_date, 'archived': False}
+#             self.entries.append(entry)
+#             self.ids.journal_input.text = ''
+#             self.update_journal_list()
+#             self.save_entries_to_file()  # Save changes
+#
+#     def update_journal_list(self):
+#         self.ids.journal_list.clear_widgets()
+#         entries_to_display = self.archived_entries if self.show_archived else self.entries
+#
+#         if self.show_archived and not entries_to_display:
+#             no_archive_item = OneLineListItem(text="No archived entries.")
+#             self.ids.journal_list.add_widget(no_archive_item)
+#         else:
+#             for entry in entries_to_display:
+#                 list_item = OneLineListItem(
+#                     text=f"{entry['date']}: {entry['text'][:30]}...",
+#                 )
+#                 list_item.bind(on_release=partial(self.edit_entry, entry))
+#                 self.ids.journal_list.add_widget(list_item)
+#
+#                 # list_item = OneLineListItem(
+#                 #     text=f"{entry['date']}: {entry['text'][:30]}...",
+#                 # )
+#                 # list_item.bind(on_release=partial(self.edit_entry, entry))
+#                 # self.ids.journal_list.add_widget(list_item)
+#
+#     def edit_entry(self, entry, instance):
+#         content = BoxLayout(orientation='vertical', spacing="10dp")
+#         text_input = TextInput(text=entry['text'], multiline=True)
+#         content.add_widget(text_input)
+#
+#         content.add_widget(MDRaisedButton(
+#             text="Save Edited Entry",
+#             on_release=partial(self.save_edited_entry, entry, text_input)
+#         ))
+#
+#         content.add_widget(MDRaisedButton(
+#             text="Archive Entry", on_release=partial(self.confirm_archive_entry, entry)
+#         ))
+#
+#         self.popup = Popup(title="Edit Entry", content=content, size_hint=(0.8, 0.8))
+#         self.popup.open()
+#
+#     def save_edited_entry(self, entry, text_input, btn=None):
+#         entry['text'] = text_input.text
+#         self.popup.dismiss()
+#         self.update_journal_list()
+#         self.save_entries_to_file()  # Save changes
+#
+#     def confirm_archive_entry(self, entry, btn=None):
+#         if not self.dialog:
+#             self.dialog = MDDialog(
+#                 title="Confirm Archive",
+#                 text="Are you sure you want to archive this entry?",
+#                 buttons=[
+#                     MDFlatButton(text="CANCEL", on_release=self.dismiss_dialog),
+#                     MDFlatButton(text="CONFIRM", on_release=partial(self.archive_entry, entry))
+#                 ],
+#             )
+#         self.dialog.open()
+#
+#     def dismiss_dialog(self, instance):
+#         self.dialog.dismiss()
+#
+#     def archive_entry(self, entry, btn=None):
+#         if entry in self.entries:
+#             self.entries.remove(entry)
+#             self.archived_entries.append(entry)
+#         else:
+#             self.archived_entries.remove(entry)
+#             self.entries.append(entry)
+#
+#         self.dismiss_dialog(None)
+#         self.popup.dismiss()
+#         self.update_journal_list()
+#         self.save_entries_to_file()  # Save changes
+#
+#     def toggle_archive(self):
+#         self.show_archived = not self.show_archived
+#         # Update the toggle button text via its id.
+#         self.ids.archive_toggle_button.text = "Back to Journal" if self.show_archived else "View Archived Entries"
+#         self.update_journal_list()
+#
+#     def save_entries_to_file(self):
+#         """Saves the current journal entries to the JSON file."""
+#         data = {
+#             "entries": self.entries,
+#             "archived_entries": self.archived_entries,
+#         }
+#         with open(JOURNAL_FILE, 'w') as file:
+#             json.dump(data, file, indent=4)
 
 
 class ChatbotScreen(Screen):
