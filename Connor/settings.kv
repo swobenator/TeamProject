@@ -5,157 +5,12 @@ MDNavigationLayout:
         MeditationScreen:
 
         SettingsScreen:
-            name: "settings"
-            md_bg_color: app.theme_cls.bg_normal
 
-            MDBoxLayout:
-                orientation: "vertical"
+        HabitTrackerScreen:
 
-                MDTopAppBar:
-                    title: "Menu"
-                    left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-                    elevation: 10
-
-                MDBoxLayout:
-                    orientation: "vertical"
-                    padding: "10dp"
-                    spacing: "10dp"
-
-                    Image:
-                        source: "settings.png"
-                        size_hint: None, None
-                        size: "85dp", "85dp"
-                        pos_hint: {"center_x": 0.5}
-
-                    MDLabel:
-                        text: "Settings"
-                        font_style: "H5"
-                        halign: "center"
-                        size_hint_y: None
-                        height: self.texture_size[1]
-
-                    MDBoxLayout:
-                        orientation: "horizontal"
-                        spacing: dp(10)
-                        padding: dp(10)
-                        md_bg_color: app.theme_cls.bg_normal
-
-                        MDIcon:
-                            icon: "theme-light-dark"
-                            size_hint: None, None
-                            size: dp(24), dp(24)
-                            pos_hint: {'center_y': 0.5}
-
-                        MDLabel:
-                            text: "Dark Mode"
-                            valign: "center"
-                            size_hint_x: 0.7
-
-                        MDSwitch:
-                            id: dark_mode_switch
-                            active: app.dark_mode
-                            on_active: app.toggle_dark_mode(self, self.active)
-                            pos_hint: {'center_y': 0.5}
-
-                    MDBoxLayout:
-                        orientation: "horizontal"
-                        spacing: dp(10)
-                        padding: dp(10)
-                        md_bg_color: app.theme_cls.bg_normal
-
-                        MDIcon:
-                            icon: "bell-outline"
-                            size_hint: None, None
-                            size: dp(24), dp(24)
-                            pos_hint: {'center_y': 0.5}
-
-                        MDLabel:
-                            text: "Notifications"
-                            valign: "center"
-                            size_hint_x: 0.7
-
-                        MDSwitch:
-                            id: notifications_switch
-                            active: app.notifications_enabled
-                            on_active: app.toggle_notifications(self, self.active)
-                            pos_hint: {'center_y': 0.5}
-
-                    MDBoxLayout:
-                        orientation: "horizontal"
-                        spacing: dp(10)
-                        padding: dp(10)
-                        md_bg_color: app.theme_cls.bg_normal
-
-                        MDIcon:
-                            icon: "palette"
-                            size_hint: None, None
-                            size: dp(24), dp(24)
-                            pos_hint: {'center_y': 0.5}
-
-                        MDLabel:
-                            text: "Select Theme"
-                            valign: "center"
-                            size_hint_x: 0.7
-
-                        MDRectangleFlatIconButton:
-                            icon: "palette"
-                            text: "Change theme"
-                            pos_hint: {'center_y': 0.5}
-                            on_release: app.change_theme()
-
-        Screen:
-            id: habit_tracker
-            name: "habit_tracker"
-
-            MDBoxLayout:
-                orientation: "vertical"
-                spacing: "10dp"
-                md_bg_color: 0.96, 0.96, 0.86, 1
-
-                MDTopAppBar:
-                    title: "Habit Tracker"
-                    left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-                    elevation: 10
-
-                MDGridLayout:
-                    cols: 5
-                    spacing: "20dp"
-                    size_hint_y: None
-                    height: "50dp"
-
-                    MDRaisedButton:
-                        id: mon_button
-                        text: "Mon"
-                        on_press: app.toggle_day_selection(self)
-                    MDRaisedButton:
-                        id: tue_button
-                        text: "Tue"
-                        on_press: app.toggle_day_selection(self)
-                    MDRaisedButton:
-                        id: wed_button
-                        text: "Wed"
-                        on_press: app.toggle_day_selection(self)
-                    MDRaisedButton:
-                        id: thu_button
-                        text: "Thu"
-                        on_press: app.toggle_day_selection(self)
-                    MDRaisedButton:
-                        id: fri_button
-                        text: "Fri"
-                        on_press: app.toggle_day_selection(self)
-
-                ScrollView:
-                    MDBoxLayout:
-                        id: habits_list
-                        orientation: "vertical"
-                        size_hint_y: None
-                        height: self.minimum_height
-                        adaptive_height: True
-
-            MDFloatingActionButton:
-                icon: "plus"
-                pos_hint: {"center_x": 0.5, "center_y": 0.1}
-                on_release: app.add_habit_dialog()
+# -----------------------------
+# Navigation Layout
+# -----------------------------
 
     MDNavigationDrawer:
         id: nav_drawer
@@ -366,3 +221,164 @@ MDNavigationLayout:
                 text: "Fire Crackles"
                 ripple_color: 1, 0, 0, 0.3
                 on_press: root.select_sound("Bonfire.mp3")
+
+
+# -----------------------------
+# Setting Screen Layout
+# -----------------------------
+
+<SettingsScreen>:
+    name: "settings"
+    md_bg_color: root.theme_cls.bg_normal
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Menu"
+            left_action_items: [["menu", lambda x:app.root.ids.nav_drawer.set_state("open")]]
+            elevation: 10
+
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: "10dp"
+            spacing: "10dp"
+
+            Image:
+                source: "settings.png"
+                size_hint: None, None
+                size: "85dp", "85dp"
+                pos_hint: {"center_x": 0.5}
+
+            MDLabel:
+                text: "Settings"
+                font_style: "H5"
+                halign: "center"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                spacing: dp(10)
+                padding: dp(10)
+                md_bg_color: root.theme_cls.bg_normal
+
+                MDIcon:
+                    icon: "theme-light-dark"
+                    size_hint: None, None
+                    size: dp(24), dp(24)
+                    pos_hint: {'center_y': 0.5}
+
+                MDLabel:
+                    text: "Dark Mode"
+                    valign: "center"
+                    size_hint_x: 0.7
+
+                MDSwitch:
+                    id: dark_mode_switch
+                    active: root.dark_mode
+                    on_active: root.toggle_dark_mode(self, self.active)
+                    pos_hint: {'center_y': 0.5}
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                spacing: dp(10)
+                padding: dp(10)
+                md_bg_color: root.theme_cls.bg_normal
+
+                MDIcon:
+                    icon: "bell-outline"
+                    size_hint: None, None
+                    size: dp(24), dp(24)
+                    pos_hint: {'center_y': 0.5}
+
+                MDLabel:
+                    text: "Notifications"
+                    valign: "center"
+                    size_hint_x: 0.7
+
+                MDSwitch:
+                    id: notifications_switch
+                    active: root.notifications_enabled
+                    on_active: root.toggle_notifications(self, self.active)
+                    pos_hint: {'center_y': 0.5}
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                spacing: dp(10)
+                padding: dp(10)
+                md_bg_color: root.theme_cls.bg_normal
+
+                MDIcon:
+                    icon: "palette"
+                    size_hint: None, None
+                    size: dp(24), dp(24)
+                    pos_hint: {'center_y': 0.5}
+
+                MDLabel:
+                    text: "Select Theme"
+                    valign: "center"
+                    size_hint_x: 0.7
+
+                MDRectangleFlatIconButton:
+                    icon: "palette"
+                    text: "Change theme"
+                    pos_hint: {'center_y': 0.5}
+                    on_release: root.change_theme()
+
+# -----------------------------
+# Habit Screen Layout
+# -----------------------------
+
+<HabitTrackerScreen>:
+    name: "habit_tracker"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+        md_bg_color: 0.96, 0.96, 0.86, 1
+
+        MDTopAppBar:
+            title: "Habit Tracker"
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+            elevation: 10
+
+        MDGridLayout:
+            cols: 5
+            spacing: "20dp"
+            size_hint_y: None
+            height: "50dp"
+
+            MDRaisedButton:
+                id: mon_button
+                text: "Mon"
+                on_press: root.toggle_day_selection(self)
+            MDRaisedButton:
+                id: tue_button
+                text: "Tue"
+                on_press: root.toggle_day_selection(self)
+            MDRaisedButton:
+                id: wed_button
+                text: "Wed"
+                on_press: root.toggle_day_selection(self)
+            MDRaisedButton:
+                id: thu_button
+                text: "Thu"
+                on_press: root.toggle_day_selection(self)
+            MDRaisedButton:
+                id: fri_button
+                text: "Fri"
+                on_press: root.toggle_day_selection(self)
+
+        ScrollView:
+            MDBoxLayout:
+                id: habits_list
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                adaptive_height: True
+
+    MDFloatingActionButton:
+        icon: "plus"
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
+        on_release: root.add_habit_dialog()
