@@ -14,7 +14,6 @@ from pathlib import Path
 #Kivy Imports
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
-import logging
 from datetime import datetime, timedelta
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -42,85 +41,117 @@ Window.size = (400, 720)
 #Rewards Page
 #Author: Bogdan Postolachi
 #Group B
+
 # Constants
-REWARDS_FILE = "rewards.json"
-DAILY_REWARD_COINS = 10
-MILESTONE_BONUS = {
+REWARDS_FILE = "rewards.json" #specyfing the name of the file that stores reward data
+DAILY_REWARD_COINS = 10 #amount of coins user gets every day they log in
+
+#Dictionary
+#Dictionary items are presented in key:value pairs, and can be referred to by using the key name
+#Example code used for inspiration (https://www.w3schools.com/python/python_dictionaries.asp):
+"""thisdict = {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+} """
+MILESTONE_BONUS = { #dictionary that defines bounus coins for millestones
     7: 25,
     14: 50,
     30: 100
 }
 
+#logging module used to track events that happen while program runs
+#reasource used for info: https://docs.python.org/3/library/logging.html
 logging.basicConfig(level=logging.INFO)
 
 
-
+#class manages & updates user daily rewards
+#also saves & loads data to json file
 class RewardsManager:
+
+    #constructor class
+    #resource used for info: https://www.w3schools.com/python/gloss_python_class_init.asp
     def __init__(self, file_path=REWARDS_FILE):
         self.file_path = Path(file_path)
         self.data = self.load_rewards()
 
-    def load_rewards(self):
-        if self.file_path.exists():
-            try:
+
+    #loads user reward data
+    def load_rewards(self): #defines method of the RewardsManager class
+        if self.file_path.exists(): #checks if file rewards.json exists
+            try: #if file exists open in read mode
                 with open(self.file_path, "r") as file:
                     return json.load(file)
-            except json.JSONDecodeError:
-                logging.error("Invalid JSON in rewards file", exc_info=True)
-        return {"coins": 0, "streak": 0, "last_login": "", "login_history": []}
+            except json.JSONDecodeError: #if JSON file is corrupted log an error
+                logging.error("Invalid JSON file", exc_info=True)
+        return {"coins": 0, "streak": 0, "last_login": "", "login_history": []} #if the file does not exist or is corrupted, returns default dictionary
 
+
+    #method saves the current rewards data
+    #only takes self as an arguement, it refers to the current instance of the class
+    #refernce for info: https://www.w3schools.com/python/gloss_python_self.asp
     def save_rewards(self):
-        with open(self.file_path, "w") as file:
-            json.dump(self.data, file, indent=4)
+        with open(self.file_path, "w") as file: #self.file_path is the file location and w means write mode
+            json.dump(self.data, file, indent=4) #dump() converts the Python dictionary into JSON file, (https://www.geeksforgeeks.org/json-dump-in-python/)
 
+
+    #checks if user logged in today, updates streak, coins, milestones and login history and saves updated data back to the JSON
     def update_rewards(self):
-        today = datetime.now().date()
-        today_str = today.strftime("%d-%m-%Y")
-        last_login = self.data.get("last_login")
+        today = datetime.now().date() #gets today's date
+        today_str = today.strftime("%d-%m-%Y") #converts date to string
+        last_login = self.data.get("last_login") #reads last_login value from rewards data
 
+        #check log in streak
         if last_login:
             last_date = datetime.strptime(last_login, "%d-%m-%Y").date()
-            if last_date == today:
+            if last_date == today: #if user logged in today don't update
                 return self.data, None
-            elif last_date == today - timedelta(days=1):
+            elif last_date == today - timedelta(days=1): #if user logged in yesterday add 1 streak
                 self.data["streak"] += 1
-            else:
+            else: #if user logged in loger than yesterday, reset streak to 1
                 self.data["streak"] = 1
-        else:
+        else: #if user's first ever make streak equal to 1
             self.data["streak"] = 1
 
-        reward = DAILY_REWARD_COINS
-        bonus = MILESTONE_BONUS.get(self.data["streak"], 0)
-        reward += bonus
+        reward = DAILY_REWARD_COINS #base reward for every new day is 10 coins
+        bonus = MILESTONE_BONUS.get(self.data["streak"], 0) #add the millestone bonus
+        reward += bonus  #add the millestone bonus to the reward
 
-        self.data["coins"] += reward
-        self.data["last_login"] = today_str
+        self.data["coins"] += reward #add the coins
+        self.data["last_login"] = today_str #update the last_login
 
-        if today_str not in self.data["login_history"]:
+        if today_str not in self.data["login_history"]: #stops duplicates of the same day
             self.data["login_history"].append(today_str)
 
-        # Calculate milestones
+        #calculates milestones
         self.data["milestones"] = self.data["streak"] // 7
 
+        #saves everything to rewards.json
         self.save_rewards()
         return self.data, bonus
 
 
+#custom screen in Kivy app
 class RewardsScreen(Screen):
+    #ensures data is fresh when the screen opens
     def on_enter(self):
-        Clock.schedule_once(lambda dt: self.update_display(), 0.1)
+        Clock.schedule_once(lambda dt: self.update_display(), 0.1) #runs when user navigates to rewards screen
 
+
+    #refrshes the rewards
     def update_display(self):
-        manager = RewardsManager()
-        rewards, bonus = manager.update_rewards()
+        manager = RewardsManager() #creates instance of RewardsManager class, loads data from rewards.json
+        rewards, bonus = manager.update_rewards() #calls update_rewards() method from RewardsManager
 
-        self.ids.coin_amount.text = str(rewards["coins"])
+        self.ids.coin_amount.text = str(rewards["coins"]) #updates the text in the app using id from kivy file
         self.ids.streak_amount.text = str(rewards["streak"])
-        self.ids.milestone_amount.text = str(rewards["milestones"])  # Update milestone count
+        self.ids.milestone_amount.text = str(rewards["milestones"])  #updates milestone count
 
-        message = f"Milestone! +{bonus} bonus coins!" if bonus else "Rewards Updated"
-        toast(message, duration=2)
+        message = f"Milestone! +{bonus} bonus coins!" if bonus else "Rewards Updated" #pop up message
+        toast(message, duration=2) #display the meesage through a toast and set duration of the pop up message
 
+
+    #method shows the login history
     def show_history(self):
         manager = RewardsManager()
         history_text = "\n".join(manager.data["login_history"][-7:]) or "No history found."
@@ -141,7 +172,7 @@ class RewardsScreen(Screen):
         content = GridLayout(cols=7, rows=5, padding=dp(5), spacing=dp(5), size_hint=(None, None),
                              size=(dp(320), dp(280)))
 
-        # Adding labels for the days of the month (1 to 31)
+        #Adding labels for the days of the month (1 to 31)
         for i in range(1, 32):
             day = f"{i:02d}-{datetime.now().month:02d}-{datetime.now().year}"
             label = Label(
@@ -170,6 +201,10 @@ class RewardsScreen(Screen):
 
 
 
+#Chat Bot Page
+#Author: Bogdan Postolachi
+#Group B
+
 #Chose to use a .env file (environment variable) for better security and is a standard
 #Source: https://www.datacamp.com/tutorial/python-environment-variables
 #Source: https://blog.devgenius.io/why-a-env-7b4a79ba689
@@ -185,7 +220,7 @@ if not API_KEY:
     print("Error: API Key not found")
     sys.exit(1) #Stops the program, exit(1) indicates an error happened(Source: https://stackoverflow.com/questions/9426045/difference-between-exit0-and-exit1-in-python)
 
-# Chat Logging
+#Chat Logging
 #All log messages will be written to chat_log.txt
 #If the file doesn’t exist it will be created
 #Source: https://docs.python.org/3/library/logging.config.html
@@ -249,9 +284,36 @@ class ChatbotScreen(MDScreen):
                         self.chat_history.append({"role": "assistant", "content": bot_message})
         return self.chat_history
 
+    #My previous chat_gpt method
+    """def chat_gpt(prompt, chat_history=[]):
+                    try:
+                        chat_history.append({"role": "user", "content": prompt})
+
+                        response = client.chat.completions.create(
+                            model="gpt-3.5-turbo", #ChatGPT model
+
+                            # Specifying to the bot that it can only talk about mental health
+                            # Source: https://ihsavru.medium.com/how-to-build-your-own-custom-chatgpt-using-python-openai-78e470d1540e
+                            messages=[
+                                {"role": "system", "content": "You are a mental health advisor. Your role is to help users dealing with mental health issues and provide support. Be concise in your responses."}
+                            ] + chat_history,  #maintain conversation history
+                            temperature=0.7,
+                            max_tokens=150
+                        )
+
+                        message = response.choices[0].message.content
+                        chat_history.append({"role": "assistant", "content": message})
+
+                        # Log conversation
+                        log_chat(prompt, message)
+
+                        return message
+                    except openai.APIConnectionError as e:
+                        logging.error(f"API Connection Error: {e}")
+                        return "I'm sorry, but I encountered an error. Please try again later."""""
+
 
     def chat_gpt(self, prompt):
-        """Handles conversation with ChatGPT."""
         try:
             self.chat_history.append({"role": "user", "content": prompt})
 
@@ -270,13 +332,13 @@ class ChatbotScreen(MDScreen):
             # Log the conversation
             self.log_chat(prompt, message)
 
+
             return message
         except openai.APIConnectionError as e:
             logging.error(f"API Connection Error: {e}")
             return "I'm sorry, but I encountered an error. Please try again later."
 
     def send_message(self):
-        """Handles user input, sends it to GPT, and updates UI."""
         try:
 
             user_input = self.ids.user_input.text.strip()
@@ -338,10 +400,9 @@ class ChatbotScreen(MDScreen):
 
 
 class ZenFlowApp(MDApp):
-    """Main chatbot application."""
+    #Main application
 
     def build(self):
-        """Initializes the ScreenManager and loads the chatbot screen."""
           # Load chat history on startup
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.theme_style = "Light"

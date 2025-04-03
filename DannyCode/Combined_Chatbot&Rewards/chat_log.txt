@@ -46,3 +46,7 @@ Zen Bot: I'm here for you. Would you like to talk about why you're feeling sad?
 User: tell me everythinh i need to know about mental health
 Zen Bot: Mental health involves our emotional, psychological, and social well-being. It affects how we think, feel, and act. It also helps determine how we handle stress, relate to others, and make choices. Taking care of your mental health is important for your overall well-being. If you have any specific questions or concerns, feel free to ask.
 
+[2025-04-03 10:25:24]
+User: hi
+Zen Bot: It's great that you're interested in learning about mental health. Mental health includes our emotional, psychological, and social well-being. It affects how we think, feel, and act. It also helps determine how we handle stress, relate to others, and make choices. Taking care of your mental health is important for your overall well-being. If you have any specific questions or concerns, feel free to ask.
+
