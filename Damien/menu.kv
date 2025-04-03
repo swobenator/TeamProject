@@ -207,22 +207,7 @@ MDNavigationLayout:
                 ripple_color: 1, 0, 0, 0.3
                 on_press: root.select_sound("Bonfire.mp3")
 
-        #Bottom Navigation Bar with Chatbot Button
-        MDFloatLayout:
-            size_hint_y: None
-            height: "60dp"
-            pos_hint: {"bottom": 1}
-            md_bg_color: 0.8, 0.6, 1, 1  # Light Purple
 
-            MDFloatingActionButton:
-                icon: "chatbot.png"  # Chatbot icon
-                icon_size: "50sp"
-                md_bg_color: 0.9, 0.75, 1, 1  # Lavender color for the button
-                size_hint: None, None
-                size: "90dp", "90dp"  # Standard floating button size
-                elevation: 4
-                pos_hint: {"center_x": 0.47, "center_y": 0.76}  # Center the button
-                on_press: app.root.ids.screen_manager.current = "chatbot"
 
 <SwipeToDeleteItem@MDCardSwipe>:
     text: ""
