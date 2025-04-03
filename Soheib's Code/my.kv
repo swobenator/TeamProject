@@ -1,5 +1,5 @@
 <CustomSpinnerOption>:
-    background_color: 0.2, 0.2, 0.5, 1
+    background_color: 0, 0, 0.8, 1
     color: 1, 1, 1, 1
     font_size: "16sp"
     height: dp(40)
@@ -16,7 +16,6 @@
             pos: self.pos
             size: self.size
 
-
 MDNavigationLayout:
 
 
@@ -28,6 +27,7 @@ MDNavigationLayout:
         ResetScreen:
         SignupScreen:
         ForgotScreen:
+
 
     MDNavigationDrawer:
         enable_swiping: False if sm.current == "login_screen" or sm.current == "signup_screen" else True
@@ -52,6 +52,8 @@ MDNavigationLayout:
                 MDNavigationDrawerItem:
                     text: "Chatbot"
                     icon: "chatbot.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                     on_press:
                         #sm.current = "chatbot"  # Navigate to the meditation screen
                         nav_drawer.set_state("close")
@@ -59,32 +61,50 @@ MDNavigationLayout:
                 MDNavigationDrawerItem:
                     text: "Mood Tracker"
                     icon: "gauge.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                     on_release: sm.current = "mood_screen"
                     on_release: nav_drawer.set_state("close")
 
                 MDNavigationDrawerItem:
                     text: "Habit Tracker"
                     icon: "habits.png"
-                    #on_press: sm.current = "habit_screen"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    #on_press: sm.current = "habits"
                     on_release: nav_drawer.set_state("close")
 
                 MDNavigationDrawerItem:
                     text: "My Journal"  # Navigate to the journal screen
                     icon: "journal.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                     on_press:
-                        sm.current = "journal"  # Navigate to the journal screen
+                        #sm.current = "journal"  # Navigate to the journal screen
                         nav_drawer.set_state("close")
 
                 MDNavigationDrawerItem:
                     text: "Meditation Timer"  # Navigate to the meditation screen
                     icon: "meditation.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                     on_release:
                         #sm.current = "meditation"  # Navigate to the meditation screen
                         nav_drawer.set_state("close")
 
                 MDNavigationDrawerItem:
+                    text: "Streaks & Rewards"  # Settings item in the menu
+                    icon: "trophy.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    #on_press: sm.current ="rewards"
+                    on_release: nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
                     text: "Settings"  # Settings item in the menu
                     icon: "settings.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                     #on_press: sm.current ="settings"
                     on_release: nav_drawer.set_state("close")
 
@@ -97,6 +117,8 @@ MDNavigationLayout:
                 MDNavigationDrawerItem:
                     text: "Logout"
                     icon: "logout.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
                     on_press: sm.current ="login_screen"
                     on_press: nav_drawer.set_state("close")
 
@@ -104,7 +126,7 @@ MDNavigationLayout:
 <LoginScreen>:
     name: "login_screen"
     id: login_screen
-
+    md_bg_color: root.theme_cls.bg_normal
 
     FloatLayout:
         MDTopAppBar:
@@ -176,6 +198,7 @@ MDNavigationLayout:
 
 
 <MoodTrackerScreen>:
+    md_bg_color: root.theme_cls.bg_normal
     name: "mood_screen"
     id: mood_screen
 
@@ -194,7 +217,7 @@ MDNavigationLayout:
             size_hint: (0.6, 0.1)
             pos_hint: {"center_x": 0.5, "top": 0.9}
             on_text: root.plot_graph(self.text)
-            background_color: 0, 0.2, 0, 1
+            background_color: 0, 0, 0.8, 1
             color: 1, 1, 1, 1
             font_size: "18sp"
             option_cls: "CustomSpinnerOption"
@@ -208,6 +231,7 @@ MDNavigationLayout:
 
 <ResetScreen>:
     name: "reset_screen"
+    md_bg_color: root.theme_cls.bg_normal
 
 
     FloatLayout:
@@ -258,6 +282,7 @@ MDNavigationLayout:
 
 <ForgotScreen>:
     name: "forgot_screen"
+    md_bg_color: root.theme_cls.bg_normal
 
     FloatLayout:
     MDTopAppBar:
@@ -307,6 +332,7 @@ MDNavigationLayout:
 
 <SignupScreen>:
     name: "signup_screen"
+    md_bg_color: root.theme_cls.bg_normal
 
     FloatLayout:
         MDTopAppBar:
@@ -398,5 +424,3 @@ MDNavigationLayout:
             size_hint_x: 0.5
             pos_hint: {"center_x": 0.5, "center_y": 0.06}
             on_press: root.up_btn()
-
-
