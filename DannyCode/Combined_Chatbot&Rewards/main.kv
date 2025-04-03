@@ -1,0 +1,372 @@
+MDNavigationLayout:
+    MDScreenManager:
+        id:sm
+
+        RewardsScreen:
+        ChatbotScreen:
+
+    MDNavigationDrawer:
+        #enable_swiping: False if sm.current == "login_screen" or sm.current == "signup_screen" else True
+        id: nav_drawer
+
+        BoxLayout:
+            orientation: "vertical"  # Layout for items inside the drawer
+            spacing: "8dp"  # Spacing between items in the drawer
+            padding: "8dp"  # Padding for the drawer contents
+
+            # Label at the top of the navigation drawer
+            MDLabel:
+                text: "Menu"
+                font_style: "H5"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            # Menu items inside the navigation drawer, each with a respective screen to navigate to
+            MDNavigationDrawerMenu:
+
+                #menu items such as Chatbot, Mood Tracker, etc.
+                MDNavigationDrawerItem:
+                    text: "Chatbot"
+                    icon: "chatbot.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_press:
+                        sm.current = "chatbot"  # Navigate to the meditation screen
+                        nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Mood Tracker"
+                    icon: "gauge.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    #on_release: sm.current = "mood_screen"
+                    on_release: nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Habit Tracker"
+                    icon: "habits.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    #on_press: sm.current = "habits"
+                    on_release: nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "My Journal"  # Navigate to the journal screen
+                    icon: "journal.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_press:
+                        #sm.current = "journal"  # Navigate to the journal screen
+                        nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Meditation Timer"  # Navigate to the meditation screen
+                    icon: "meditation.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_release:
+                        sm.current = "meditation"  # Navigate to the meditation screen
+                        nav_drawer.set_state("close")
+                MDNavigationDrawerItem:
+                    text: "Streaks & Rewards"  # Settings item in the menu
+                    icon: "settings.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_press: sm.current ="rewards"
+                    on_release: nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Settings"  # Settings item in the menu
+                    icon: "settings.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    #on_press: sm.current ="settings"
+                    on_release: nav_drawer.set_state("close")
+
+                # BoxLayout at the bottom for the logout button
+                BoxLayout:
+                    size_hint_y: None
+                    height: "50dp"
+
+                # Logout item at the bottom of the drawer
+                MDNavigationDrawerItem:
+                    text: "Logout"
+                    icon: "logout.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    #on_press: sm.current ="login_screen"
+                    on_press: nav_drawer.set_state("close")
+
+
+
+
+
+
+<RewardsScreen>:
+    name: "rewards"
+    MDTopAppBar:
+        title: "Streaks and Rewards"
+        left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+        elevation: 4
+        pos_hint: {"top":1}
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(10)
+        padding: dp(20)
+        pos_hint: {"y":0.2}
+
+
+
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: dp(20)
+
+            # TROPHY CARD
+            MDCard:
+                orientation: "vertical"
+                padding: dp(10)
+                spacing: dp(20)
+                radius: [12]
+                elevation: 4
+                size_hint_y: None
+                height: dp(100)
+
+                Image:
+                    source: "trophy.png"
+                    size_hint: None, None
+                    size: dp(80), dp(80)
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+            # COINS CARD
+            MDCard:
+                orientation: "horizontal"
+                padding: dp(10)
+                spacing: dp(20)
+                radius: [12]
+                elevation: 4
+                size_hint_y: None
+                height: dp(60)
+
+                MDLabel:
+                    text: "Coins:"
+                    font_style: "H6"
+                    theme_text_color: "Primary"
+                    size_hint_x: 0.6
+                    valign: "middle"
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: dp(6)
+                    size_hint_x: None
+                    width: self.minimum_width
+                    size_hint_y: None
+                    height: dp(24)
+                    pos_hint: {"center_y": 0.5}
+
+                    MDLabel:
+                        id: coin_amount
+                        text: ""
+                        font_style: "H6"
+                        theme_text_color: "Primary"
+                        halign: "right"
+                        valign: "middle"
+                        size_hint: None, None
+                        width: dp(100)
+                        height: dp(24)
+                        text_size: self.size
+
+                    Image:
+                        source: "star.png"
+                        size_hint: None, None
+                        size: dp(24), dp(24)
+                        allow_stretch: True
+                        keep_ratio: True
+                        pos_hint: {"center_y": 0.5}
+
+            # STREAK CARD
+            MDCard:
+                orientation: "horizontal"
+                padding: dp(10)
+                spacing: dp(20)
+                radius: [12]
+                elevation: 4
+                size_hint_y: None
+                height: dp(60)
+
+                MDLabel:
+                    text: "Streak:"
+                    font_style: "H6"
+                    theme_text_color: "Primary"
+                    size_hint_x: 0.6
+                    valign: "middle"
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: dp(6)
+                    size_hint_x: None
+                    width: self.minimum_width
+                    size_hint_y: None
+                    height: dp(24)
+                    pos_hint: {"center_y": 0.5}
+
+                    MDLabel:
+                        id: streak_amount
+                        text: ""
+                        font_style: "H6"
+                        theme_text_color: "Primary"
+                        halign: "right"
+                        valign: "middle"
+                        size_hint: None, None
+                        width: dp(100)
+                        height: dp(24)
+                        text_size: self.size
+
+                    Image:
+                        source: "fire.png"
+                        size_hint: None, None
+                        size: dp(24), dp(24)
+                        allow_stretch: True
+                        keep_ratio: True
+                        pos_hint: {"center_y": 0.5}
+
+            # MILESTONE CARD
+            MDCard:
+                orientation: "horizontal"
+                padding: dp(10)
+                spacing: dp(20)
+                radius: [12]
+                elevation: 4
+                size_hint_y: None
+                height: dp(60)
+
+                MDLabel:
+                    text: "Milestones:"
+                    font_style: "H6"
+                    theme_text_color: "Primary"
+                    size_hint_x: 0.6
+                    valign: "middle"
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: dp(6)
+                    size_hint_x: None
+                    width: self.minimum_width
+                    size_hint_y: None
+                    height: dp(24)
+                    pos_hint: {"center_y": 0.5}
+
+                    MDLabel:
+                        id: milestone_amount
+                        text: "0"
+                        font_style: "H6"
+                        theme_text_color: "Primary"
+                        halign: "right"
+                        valign: "middle"
+                        size_hint: None, None
+                        width: dp(100)
+                        height: dp(24)
+                        text_size: self.size
+
+                    Image:
+                        source: "gold-medal.png"
+                        size_hint: None, None
+                        size: dp(24), dp(24)
+                        allow_stretch: True
+                        keep_ratio: True
+                        pos_hint: {"center_y": 0.5}
+
+            # BUTTONS BELOW CARDS
+            MDBoxLayout:
+                size_hint_y: None
+                height: dp(80)
+                spacing: dp(45)
+                padding: dp(10)
+                orientation: "horizontal"
+                halign: "center"
+                pos_hint: {"center_x": 0.5}
+
+                MDRaisedButton:
+                    text: "Refresh"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_press: root.update_display()
+                    size_hint: None, None
+                    size: dp(100), dp(50)
+                    font_size: "16sp"
+
+                MDRaisedButton:
+                    text: "History"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_press: root.show_history()
+                    size_hint: None, None
+                    size: dp(100), dp(50)
+                    font_size: "16sp"
+
+                MDRaisedButton:
+                    text: "Calendar"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_press: root.open_calendar()
+                    size_hint: None, None
+                    size: dp(100), dp(50)
+                    font_size: "16sp"
+
+<ChatbotScreen>:
+    name: "chatbot"
+    id: chatbot_screen
+
+    FloatLayout:
+        Image:
+            source: "ColorBotLogo.png"
+            size_hint: None, None
+            size: 200, 200
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            opacity: 0.4
+
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: 1, 1
+
+            MDTopAppBar:
+                title: "ZenBot"
+                left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+                elevation: 4
+
+
+            ScrollView:
+                id: chat_scroll
+                do_scroll_x: False
+                bar_width: 5
+
+                BoxLayout:
+                    id: chat_box
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: 10
+                    padding: [10, 20]
+
+            BoxLayout:
+                size_hint_y: 0.15
+                padding: [10, 5]
+                spacing: 10
+                canvas.before:
+                    Color:
+                        rgba: 0.85, 0.85, 0.85, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                MDTextField:
+                    id: user_input
+                    hint_text: "Type your message..."
+                    mode: "rectangle"
+                    size_hint_x: 0.8
+                    multiline: False
+                    height: dp(48)
+                    on_text_validate: root.send_message()
+
+                MDRaisedButton:
+                    text: "Send"
+                    size_hint_x: 0.2
+                    height: dp(48)  # Match TextField height
+                    pos_hint: {"center_y": 0.3}  # Center vertically
+                    on_press: root.send_message()
