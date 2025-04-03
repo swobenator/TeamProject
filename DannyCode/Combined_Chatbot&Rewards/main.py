@@ -1,17 +1,17 @@
-#Author: Bogdan Postolachi
-#Group B
+# Author: Bogdan Postolachi
+# Group B
 from operator import truediv
-import openai #import for openai, allows to use the chatgpt API (Source: https://www.doprax.com/tutorial/a-step-by-step-guide-to-using-the-openai-python-api/#:~:text=This%20line%20imports%20the%20OpenAI,to%20interact%20with%20OpenAI's%20APIs.&text=This%20line%20creates%20an%20instance,to%20interact%20with%20the%20API.)
-import os #alows functions that interact with the operating system (Source: https://www.geeksforgeeks.org/os-module-python-examples/)
-import sys #access the command-line arguments (Source: https://www.geeksforgeeks.org/python-sys-module/)
-import logging #makes python outputs log into a file (Source: https://www.simplilearn.com/tutorials/python-tutorial/python-logging#:~:text=Python%20import%20logging%20is%20a,even%20to%20a%20remote%20server.)
-from dotenv import load_dotenv #reads key-value pairs from a .env file and can set them as environment variables (Source: https://pypi.org/project/python-dotenv/#:~:text=Python%2Ddotenv%20reads%20key%2Dvalue,following%20the%2012%2Dfactor%20principles.)
+import openai # import for openai, allows to use the chatgpt API (Source: https://www.doprax.com/tutorial/a-step-by-step-guide-to-using-the-openai-python-api/#:~:text=This%20line%20imports%20the%20OpenAI,to%20interact%20with%20OpenAI's%20APIs.&text=This%20line%20creates%20an%20instance,to%20interact%20with%20the%20API.)
+import os # alows functions that interact with the operating system (Source: https://www.geeksforgeeks.org/os-module-python-examples/)
+import sys # access the command-line arguments (Source: https://www.geeksforgeeks.org/python-sys-module/)
+import logging # makes python outputs log into a file (Source: https://www.simplilearn.com/tutorials/python-tutorial/python-logging#:~:text=Python%20import%20logging%20is%20a,even%20to%20a%20remote%20server.)
+from dotenv import load_dotenv # reads key-value pairs from a .env file and can set them as environment variables (Source: https://pypi.org/project/python-dotenv/#:~:text=Python%2Ddotenv%20reads%20key%2Dvalue,following%20the%2012%2Dfactor%20principles.)
 from datetime import datetime, timedelta #supplies classes for manipulating dates and times (Sources: https://docs.python.org/3/library/datetime.html)
 import json
 import logging
 from pathlib import Path
 
-#Kivy Imports
+# Kivy Imports
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 from datetime import datetime, timedelta
@@ -38,16 +38,16 @@ from kivymd.toast import toast
 Window.size = (400, 720)
 
 
-#Rewards Page
-#Author: Bogdan Postolachi
-#Group B
+# Rewards Page
+# Author: Bogdan Postolachi
+# Group B
 
 # Constants
 REWARDS_FILE = "rewards.json" #specyfing the name of the file that stores reward data
 DAILY_REWARD_COINS = 10 #amount of coins user gets every day they log in
 
-#Dictionary
-#Dictionary items are presented in key:value pairs, and can be referred to by using the key name
+# Dictionary
+# Dictionary items are presented in key:value pairs, and can be referred to by using the key name
 #Example code used for inspiration (https://www.w3schools.com/python/python_dictionaries.asp):
 """thisdict = {
   "brand": "Ford",
@@ -60,48 +60,48 @@ MILESTONE_BONUS = { #dictionary that defines bounus coins for millestones
     30: 100
 }
 
-#logging module used to track events that happen while program runs
-#reasource used for info: https://docs.python.org/3/library/logging.html
+# logging module used to track events that happen while program runs
+# reasource used for info: https://docs.python.org/3/library/logging.html
 logging.basicConfig(level=logging.INFO)
 
 
-#class manages & updates user daily rewards
-#also saves & loads data to json file
+# class manages & updates user daily rewards
+# also saves & loads data to json file
 class RewardsManager:
 
-    #constructor class
-    #resource used for info: https://www.w3schools.com/python/gloss_python_class_init.asp
+    # constructor class
+    # resource used for info: https://www.w3schools.com/python/gloss_python_class_init.asp
     def __init__(self, file_path=REWARDS_FILE):
         self.file_path = Path(file_path)
         self.data = self.load_rewards()
 
 
-    #loads user reward data
+    # loads user reward data
     def load_rewards(self): #defines method of the RewardsManager class
         if self.file_path.exists(): #checks if file rewards.json exists
             try: #if file exists open in read mode
-                with open(self.file_path, "r") as file:
+                with open(self.file_path, "r") as file: #resource used for infor for accesing json files: https://crawlbase.com/blog/how-to-read-json-files-in-python/#:~:text=When%20working%20with%20a%20JSON,object%20(usually%20a%20dictionary).&text=In%20this%20code%2C%20We%20use,the%20file%20object%20to%20json
                     return json.load(file)
             except json.JSONDecodeError: #if JSON file is corrupted log an error
                 logging.error("Invalid JSON file", exc_info=True)
         return {"coins": 0, "streak": 0, "last_login": "", "login_history": []} #if the file does not exist or is corrupted, returns default dictionary
 
 
-    #method saves the current rewards data
-    #only takes self as an arguement, it refers to the current instance of the class
-    #refernce for info: https://www.w3schools.com/python/gloss_python_self.asp
+    # method saves the current rewards data
+    # only takes self as an arguement, it refers to the current instance of the class
+    # refernce for info: https://www.w3schools.com/python/gloss_python_self.asp
     def save_rewards(self):
-        with open(self.file_path, "w") as file: #self.file_path is the file location and w means write mode
+        with open(self.file_path, "w") as file: #self.file_path is the file location and w means write mode, resource used for info: https://stackoverflow.com/questions/48634389/update-json-file-in-python
             json.dump(self.data, file, indent=4) #dump() converts the Python dictionary into JSON file, (https://www.geeksforgeeks.org/json-dump-in-python/)
 
 
-    #checks if user logged in today, updates streak, coins, milestones and login history and saves updated data back to the JSON
+    # checks if user logged in today, updates streak, coins, milestones and login history and saves updated data back to the JSON
     def update_rewards(self):
         today = datetime.now().date() #gets today's date
         today_str = today.strftime("%d-%m-%Y") #converts date to string
         last_login = self.data.get("last_login") #reads last_login value from rewards data
 
-        #check log in streak
+        # check log in streak
         if last_login:
             last_date = datetime.strptime(last_login, "%d-%m-%Y").date()
             if last_date == today: #if user logged in today don't update
@@ -123,39 +123,39 @@ class RewardsManager:
         if today_str not in self.data["login_history"]: #stops duplicates of the same day
             self.data["login_history"].append(today_str)
 
-        #calculates milestones
+        # calculates milestones
         self.data["milestones"] = self.data["streak"] // 7
 
-        #saves everything to rewards.json
+        # saves everything to rewards.json
         self.save_rewards()
         return self.data, bonus
 
 
-#custom screen in Kivy app
+# custom screen in Kivy app
 class RewardsScreen(Screen):
-    #ensures data is fresh when the screen opens
+    # ensures data is fresh when the screen opens
     def on_enter(self):
         Clock.schedule_once(lambda dt: self.update_display(), 0.1) #runs when user navigates to rewards screen
 
 
-    #refrshes the rewards
+    # refrshes the rewards
     def update_display(self):
-        manager = RewardsManager() #creates instance of RewardsManager class, loads data from rewards.json
-        rewards, bonus = manager.update_rewards() #calls update_rewards() method from RewardsManager
+        manager = RewardsManager() # creates instance of RewardsManager class, loads data from rewards.json
+        rewards, bonus = manager.update_rewards() # calls update_rewards() method from RewardsManager
 
-        self.ids.coin_amount.text = str(rewards["coins"]) #updates the text in the app using id from kivy file
+        self.ids.coin_amount.text = str(rewards["coins"]) # updates the text in the app using id from kivy file
         self.ids.streak_amount.text = str(rewards["streak"])
-        self.ids.milestone_amount.text = str(rewards["milestones"])  #updates milestone count
+        self.ids.milestone_amount.text = str(rewards["milestones"])  # updates milestone count
 
         message = f"Milestone! +{bonus} bonus coins!" if bonus else "Rewards Updated" #pop up message
-        toast(message, duration=2) #display the meesage through a toast and set duration of the pop up message
+        toast(message, duration=2) # display the meesage through a toast and set duration of the pop up message
 
 
-    #method shows the login history
+    # method shows the login history
     def show_history(self):
         manager = RewardsManager()
-        history_text = "\n".join(manager.data["login_history"][-7:]) or "No history found."
-        self.dialog = MDDialog(
+        history_text = "\n".join(manager.data["login_history"][-7:]) or "No history found." # takes last 7 entries from the login_history list using slicing and joins them into a string using join
+        self.dialog = MDDialog( # popup dialog box
             title="Login History",
             text=history_text,
             buttons=[
@@ -164,20 +164,22 @@ class RewardsScreen(Screen):
         )
         self.dialog.open()
 
+
+    # mini calendar
     def open_calendar(self):
         manager = RewardsManager()
-        history = set(manager.data.get("login_history", []))
+        history = set(manager.data.get("login_history", [])) # gets log in history from the json
 
-        # Create the grid layout dynamically
+        # grid layout
         content = GridLayout(cols=7, rows=5, padding=dp(5), spacing=dp(5), size_hint=(None, None),
                              size=(dp(320), dp(280)))
 
-        #Adding labels for the days of the month (1 to 31)
+        # labels for the days of the month (1 to 31)
         for i in range(1, 32):
             day = f"{i:02d}-{datetime.now().month:02d}-{datetime.now().year}"
             label = Label(
                 text=str(i),
-                color=(1, 0, 0, 1) if day in history else (0.4, 0.4, 0.4, 1),  # Highlight login days in red
+                color=(1, 0, 0, 1) if day in history else (0.4, 0.4, 0.4, 1),  # highlight login days in red
                 font_size="16sp",
                 size_hint=(None, None),
                 size=(dp(40), dp(40)),
@@ -186,13 +188,13 @@ class RewardsScreen(Screen):
             )
             content.add_widget(label)
 
-        # Create the dialog with updated size and padding
+        # dialog with size and padding
         self.calendar_dialog = MDDialog(
             title="Login Calendar",
             type="custom",
             content_cls=content,
             size_hint=(None, None),
-            size=(dp(340), dp(340)),  # Slightly larger dialog to fit numbers
+            size=(dp(340), dp(340)),  # dialog to fit numbers
             buttons=[
                 MDRaisedButton(text="Close", on_release=lambda x: self.calendar_dialog.dismiss())
             ]
@@ -201,33 +203,33 @@ class RewardsScreen(Screen):
 
 
 
-#Chat Bot Page
-#Author: Bogdan Postolachi
-#Group B
+# Chat Bot Page
+# Author: Bogdan Postolachi
+# Group B
 
-#Chose to use a .env file (environment variable) for better security and is a standard
-#Source: https://www.datacamp.com/tutorial/python-environment-variables
-#Source: https://blog.devgenius.io/why-a-env-7b4a79ba689
-#Loads environment variable
-#Loads the .env file which stores the API Key
-load_dotenv(dotenv_path="chatbot_api.env") #specifies the .env file to access
+# Chose to use a .env file (environment variable) for better security and is a standard
+# Source: https://www.datacamp.com/tutorial/python-environment-variables
+# Source: https://blog.devgenius.io/why-a-env-7b4a79ba689
+# Loads environment variable
+# Loads the .env file which stores the API Key
+load_dotenv(dotenv_path="chatbot_api.env") # specifies the .env file to access
 
 # Gets API Key from .env file
 API_KEY = os.getenv("OPENAI_API_KEY")
 
-#Error message in case API Key can't be accesed
+# Error message in case API Key can't be accesed
 if not API_KEY:
     print("Error: API Key not found")
     sys.exit(1) #Stops the program, exit(1) indicates an error happened(Source: https://stackoverflow.com/questions/9426045/difference-between-exit0-and-exit1-in-python)
 
-#Chat Logging
-#All log messages will be written to chat_log.txt
-#If the file doesn’t exist it will be created
-#Source: https://docs.python.org/3/library/logging.config.html
+# Chat Logging
+# All log messages will be written to chat_log.txt
+# If the file doesn’t exist it will be created
+# Source: https://docs.python.org/3/library/logging.config.html
 log_filename = "chat_log.txt"
 
-#Log Configuration Code inspired from source mentioned above
-#Original Code:
+# Log Configuration Code inspired from source mentioned above
+# Original Code:
 """formatters:
   brief:
     format: '%(message)s'
@@ -242,18 +244,23 @@ log_filename = "chat_log.txt"
 
 logging.basicConfig(
     filename=log_filename,
-    level=logging.INFO, #minimum security level of messages to log
-    format="%(asctime)s - %(message)s", #defines how each log message will be formatted
-    datefmt="%Y-%m-%d %H:%M:%S", #Specifies how the timestamp should be displayed
+    level=logging.INFO, # minimum security level of messages to log
+    format="%(asctime)s - %(message)s", # defines how each log message will be formatted
+    datefmt="%Y-%m-%d %H:%M:%S", # Specifies how the timestamp should be displayed
 )
 
 
 
 class ChatbotScreen(MDScreen):
+
+
+    #constructor
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.client = openai.OpenAI(api_key=API_KEY)
         self.chat_history = self.load_chat_history()
+
+
     # function to write logs
     # user_input - user messages
     # chat_response - bot responses
@@ -284,7 +291,7 @@ class ChatbotScreen(MDScreen):
                         self.chat_history.append({"role": "assistant", "content": bot_message})
         return self.chat_history
 
-    #My previous chat_gpt method
+    # My previous chat_gpt method
     """def chat_gpt(prompt, chat_history=[]):
                     try:
                         chat_history.append({"role": "user", "content": prompt})
@@ -313,15 +320,19 @@ class ChatbotScreen(MDScreen):
                         return "I'm sorry, but I encountered an error. Please try again later."""""
 
 
+    # code form the open ai platform was used for this method: https://platform.openai.com/docs/quickstart?api-mode=responses
     def chat_gpt(self, prompt):
         try:
             self.chat_history.append({"role": "user", "content": prompt})
 
             response = self.client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-3.5-turbo", # specifying the chatgpt model
+
+                # Specifying to the bot that it can only talk about mental health
+                # Source: https://ihsavru.medium.com/how-to-build-your-own-custom-chatgpt-using-python-openai-78e470d1540e
                 messages=[
-                    {"role": "system", "content": "You are a mental health advisor. Your role is to help users dealing with mental health issues and provide support. All of your responses should be under 75 words."}
-                ] + self.chat_history[-10:],  # Only keep the last 10 messages
+                    {"role": "system", "content": "You are a mental health advisor. Your role is to help users dealing with mental health issues and provide support. All of your responses should be concise"}
+                ] + self.chat_history[-10:],  #keep the last 10 messages
                 temperature=0.7,
                 max_tokens=150
             )
@@ -332,35 +343,42 @@ class ChatbotScreen(MDScreen):
             # Log the conversation
             self.log_chat(prompt, message)
 
-
             return message
         except openai.APIConnectionError as e:
             logging.error(f"API Connection Error: {e}")
             return "I'm sorry, but I encountered an error. Please try again later."
 
+
+    # method to get user meesage and send it to chatgpt
     def send_message(self):
         try:
 
-            user_input = self.ids.user_input.text.strip()
+            # gets the text from the MDTextField
+            user_input = self.ids.user_input.text.strip() # stip() is similar to the trim() method in java, it removes white spaces (https://www.w3schools.com/python/ref_string_strip.asp#:~:text=The%20strip()%20method%20removes,any%20whitespaces%20will%20be%20removed.)
 
+            # error message in case user presses send button without typing anything
             if not user_input:
                 print("Warning: User input is empty, ignoring send request.")
                 return
 
             bot_response = self.chat_gpt(user_input)
 
-            # Display user and bot messages
+            # display user and bot messages
             self.display_message("You", user_input, align="right")
             self.display_message("Zen Bot", bot_response, align="left")
 
-            self.ids.user_input.text = ""
+            self.ids.user_input.text = "" #clears the text field after sending a message
 
+        # in case any erors occur, like connection problems
         except Exception as e:
             print(f"ERROR in send_message: {e}")
 
+
+    # function will display the messages
     def display_message(self, sender, message, align="left"):
         chat_box = self.ids.chat_box
 
+        # label to store the messages
         label = Label(
             text=f"[b]{sender}[/b]\n{message}",
             markup=True,
@@ -373,9 +391,11 @@ class ChatbotScreen(MDScreen):
             padding=(10, 10)
         )
 
+
+        #function is used to properly size and position a new chat message
         def finalize_layout(_):
-            label.height = label.texture_size[1] + 20
-            label.width = label.texture_size[0]
+            label.height = label.texture_size[1] + 20 # calculates the height of the label based on the height of the text inside it
+            label.width = label.texture_size[0] # sets width of the label based on the actual width of the text inside it
 
             container = BoxLayout(
                 size_hint_y=None,
@@ -384,10 +404,10 @@ class ChatbotScreen(MDScreen):
                 padding=[10, 5],
             )
 
-            if align == "right":
+            if align == "right": # adds empty Widget() as a spacer then the label to push it to the right
                 container.add_widget(Widget())
                 container.add_widget(label)
-            else:
+            else: # label is added first and the spacer comes after to push the message to the left
                 container.add_widget(label)
                 container.add_widget(Widget())
 
@@ -395,15 +415,14 @@ class ChatbotScreen(MDScreen):
             chat_box.height += container.height + 10
             self.ids.chat_scroll.scroll_y = 0
 
-        # Delay to allow Kivy to calculate texture_size first
+        # delay to let Kivy to calculate texture_size first
         Clock.schedule_once(finalize_layout, 0)
 
 
 class ZenFlowApp(MDApp):
-    #Main application
+    # Main application
 
     def build(self):
-          # Load chat history on startup
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.theme_style = "Light"
         return Builder.load_file("main.kv")
