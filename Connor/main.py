@@ -26,7 +26,7 @@ Window.size = (400, 720)
 SOUNDS_FOLDER = "sounds"  # Path to sound files
 DATA_FILE = "habit_data.json"
 
-
+#damiens code
 # beginning of mediation code
 
 # Usage of Inheritance, MeditationScreen is a subclass/child of Screen(parent)
@@ -168,6 +168,7 @@ class MeditationScreen(Screen):
 
         # end of mediation code
 
+#Connor Code
 # Habit Input Dialog for adding habits
 class HabitInputDialog(MDBoxLayout):
     def __init__(self, **kwargs):
@@ -194,7 +195,7 @@ class HabitTrackerScreen(Screen):
     def load_habits(self):
         if os.path.exists(DATA_FILE):
             with open(DATA_FILE, "r") as f:
-                self.habits = json.load(f)  # Load habits from file
+                self.habits = json.load(f)  # Load habits from file.
                 return self.habits
         else:
             self.habits = {}
@@ -205,11 +206,11 @@ class HabitTrackerScreen(Screen):
         data = {}
         for day, habits in self.habits.items():
             data[day] = [{"habit": habit} for habit in habits]
-
+#This is for when a new habit is created it is saved to the habit JSON where it is displayed.
         with open(DATA_FILE, "w") as f:
             json.dump(self.habits, f, indent=4)
 
-
+#The mongoDB will be on the final commit
     def toggle_day_selection(self, button):
         day = button.text
 
