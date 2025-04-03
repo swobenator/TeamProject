@@ -1,0 +1,52 @@
+[2025-04-02 15:53:55]
+User: hello
+Zen Bot: Hello! How can I support you today with your mental health?
+
+[2025-04-02 15:54:20]
+User: sss
+Zen Bot: Hello! How can I support you today?
+
+[2025-04-02 15:54:29]
+User: i am depressed
+Zen Bot: I'm sorry to hear that you're feeling this way. It's important to remember that you're not alone, and there is support available. Have you considered talking to a therapist or counselor about how you're feeling? You can also try practicing self-care activities, reaching out to friends or loved ones, or engaging in activities that bring you joy. Remember, it's okay to ask for help when you need it.
+
+[2025-04-02 15:58:12]
+User: hello
+Zen Bot: I'm sorry to hear that you're feeling this way. Remember, you're not alone, and there is support available to help you through this. If you're open to it, seeking professional help from a therapist or counselor can make a big difference. You can also try reaching out to trusted friends or loved ones for support. It's important to take care of yourself and prioritize your mental health.
+
+[2025-04-02 16:05:28]
+User: hello
+Zen Bot: I'm here to support you. What's been on your mind lately?
+
+[2025-04-02 16:05:52]
+User: tell me evrything about depression
+Zen Bot: Depression is a mental health condition that can affect how you feel, think, and handle daily activities. Symptoms may include persistent sadness, loss of interest in activities, changes in appetite or sleep, feelings of worthlessness or guilt, and difficulty concentrating. It's important to seek help from a mental health professional if you're experiencing these symptoms. Remember, you're not alone, and there is support available.
+
+[2025-04-02 18:21:59]
+User: hi
+Zen Bot: Depression is a common mental health disorder that can affect how you feel, think, and handle daily activities. Symptoms may include feelings of sadness, hopelessness, loss of interest in activities, changes in appetite or sleep patterns, fatigue, and difficulty concentrating. It's important to seek help from a mental health professional for an accurate diagnosis and appropriate treatment. Remember, you're not alone, and support is available.
+
+[2025-04-02 18:22:12]
+User: hello
+Zen Bot: Hello! How are you feeling today?
+
+[2025-04-02 19:23:57]
+User: hello
+Zen Bot: Hello. How are you feeling today?
+
+[2025-04-02 19:24:08]
+User: i am sad
+Zen Bot: I'm sorry to hear that you're feeling sad. It's important to acknowledge your emotions. Would you like to talk more about what's been going on?
+
+[2025-04-02 22:47:17]
+User: hi
+Zen Bot: I'm here for you. Would you like to talk about why you're feeling sad?
+
+[2025-04-02 22:47:58]
+User: tell me everythinh i need to know about mental health
+Zen Bot: Mental health involves our emotional, psychological, and social well-being. It affects how we think, feel, and act. It also helps determine how we handle stress, relate to others, and make choices. Taking care of your mental health is important for your overall well-being. If you have any specific questions or concerns, feel free to ask.
+
+[2025-04-03 10:25:24]
+User: hi
+Zen Bot: It's great that you're interested in learning about mental health. Mental health includes our emotional, psychological, and social well-being. It affects how we think, feel, and act. It also helps determine how we handle stress, relate to others, and make choices. Taking care of your mental health is important for your overall well-being. If you have any specific questions or concerns, feel free to ask.
+
