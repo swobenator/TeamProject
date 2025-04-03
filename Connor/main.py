@@ -12,6 +12,9 @@ from kivy.uix.screenmanager import ScreenManager
 from kivy.properties import BooleanProperty
 from kivymd.uix.button import MDIconButton
 
+#where I learned about the different kivy imports and how to use them.
+# NB***  https://kivymd.readthedocs.io/en/latest/
+
 # Damien imports
 from kivy.clock import \
     Clock  # Import allows scheduling task (Side note: This has built in properties like Clock.schedule_interval() which acts like a loop), Source: https://kivy.org/doc/stable/api-kivy.clock.html
@@ -171,8 +174,10 @@ class MeditationScreen(Screen):
 #Connor Code
 # Habit Input Dialog for adding habits
 class HabitInputDialog(MDBoxLayout):
+    # This is the class constructor
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        #intalises all the variables
         self.orientation = "vertical"
         self.spacing = "10dp"
         self.padding = "10dp"
@@ -192,6 +197,7 @@ class HabitTrackerScreen(Screen):
         self.habits = self.load_habits()  # Store habits categorized by days
         self.dialog = None  # the habit input dialog
 
+# https://stackoverflow.com/questions/12309269/how-do-i-write-json-data-to-a-file
     def load_habits(self):
         if os.path.exists(DATA_FILE):
             with open(DATA_FILE, "r") as f:
@@ -206,11 +212,11 @@ class HabitTrackerScreen(Screen):
         data = {}
         for day, habits in self.habits.items():
             data[day] = [{"habit": habit} for habit in habits]
-#This is for when a new habit is created it is saved to the habit JSON where it is displayed.
+#This is for when a new habit is created in what's called a python dictionary it is saved to the habit JSON where it is displayed.
         with open(DATA_FILE, "w") as f:
             json.dump(self.habits, f, indent=4)
 
-#The mongoDB will be on the final commit
+#The mongoDB will be on the final commit to save habits to specific user
     def toggle_day_selection(self, button):
         day = button.text
 
@@ -242,7 +248,7 @@ class HabitTrackerScreen(Screen):
         self.dialog.open()
 
 
-#Adds the new habit and saves the info to the JSON
+#This is the function for to add a new habit
     def add_habit(self, habit_name):
         habit_name = habit_name.strip()
         if not habit_name or not self.selected_days:
@@ -262,9 +268,12 @@ class HabitTrackerScreen(Screen):
 
 #Creates and displays the new habit on a MDCard
     def add_habit_card(self, habit_name, day):
+        # for each card in the habits list
         for card in self.ids.habits_list.children:
+            # if the card has a habit name attribute that is the same as the card being added
             if hasattr(card, "habit_name") and card.habit_name == habit_name:
-                return  # Prevent duplicate habit cards
+                # return to prevent duplicate habit cards
+                return
 
         card = MDCard(
             orientation="vertical",
@@ -275,9 +284,9 @@ class HabitTrackerScreen(Screen):
             padding="10dp",
         )
 
-        card.habit_name = habit_name  # Store habit name to prevent duplicates
+        card.habit_name = habit_name  # Stores the habit name to prevent duplicates
 
-        #Bin icon to removes the habit from the screen
+        # Bin icon to removes the habit from the screen
         label = MDLabel(text=habit_name, halign="center")
         delete_button = MDIconButton(
             icon="trash-can",
@@ -301,7 +310,7 @@ class HabitTrackerScreen(Screen):
             self.ids.habits_list.remove_widget(card)  # Remove habit card from UI
             self.save_habits()  # Save the updated habits list
 
-#Function to show the only habit based on day slected
+#Function to show the only habit based on day selected
     def filter_habits(self):
         habits_list = self.ids.habits_list
         habits_list.clear_widgets()  # Remove all habit cards
@@ -320,9 +329,9 @@ class HabitTrackerScreen(Screen):
 
 # Settings Screen
 class SettingsScreen(Screen):
-    dark_mode = BooleanProperty(False)
-    notifications_enabled = BooleanProperty(False)
-    theme_colors = ["Blue", "Red", "Green", "Purple", "Indigo"]
+    dark_mode = BooleanProperty(False) #Automatically is on light mode until changed
+    notifications_enabled = BooleanProperty(False) #Automatically is turned off
+    theme_colors = ["Blue", "Red", "Green", "Purple", "Indigo"] #Different options of colours to choose from
     current_theme_index = 0
 
     def __init__(self, **kwargs):
