@@ -1,0 +1,1165 @@
+# Custom style for the dop down spinner values
+<CustomSpinnerOption>:
+    background_color: 0, 0, 0.7, 1
+    color: 1, 1, 1, 1
+    font_size: "16sp"
+    height: dp(40)
+<Label>:
+    color: 0.3,0.6,0.7,1
+<Button>:
+    background_color: .0,1,.0,.5
+    color: 0,0,0,1
+<Screen>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+MDNavigationLayout:
+
+
+    MDScreenManager:
+        id : sm
+
+        # Calling all the screens in the screen manager, with the login being first
+        LoginScreen:
+        SettingsScreen:
+        MeditationScreen:
+        JournalScreen:
+        MoodTrackerScreen:
+        ResetScreen:
+        SignupScreen:
+        ForgotScreen:
+        HabitTrackerScreen:
+        ChatbotScreen:
+        RewardsScreen:
+
+    MDNavigationDrawer:
+        # Disables swiping to show the hamburger menu when the current screen is the login, signup or reset screens
+        enable_swiping: False if sm.current == "login_screen" or sm.current == "signup_screen" or sm.current == "forgot_screen" or sm.current == "reset_screen" else True
+        id: nav_drawer
+
+        BoxLayout:
+            orientation: "vertical"  # Layout for items inside the drawer
+            spacing: "8dp"  # Spacing between items in the drawer
+            padding: "8dp"  # Padding for the drawer contents
+
+            # Label at the top of the navigation drawer
+            MDLabel:
+                text: "Menu"
+                font_style: "H5"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            # Menu items inside the navigation drawer, each with a respective screen to navigate to
+            MDNavigationDrawerMenu:
+
+                #menu items such as Chatbot, Mood Tracker, etc.
+                MDNavigationDrawerItem:
+                    text: "Chatbot"
+                    icon: "chatbot.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_press:
+                        sm.current = "chatbot"  # Navigate to the meditation screen
+                        nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Mood Tracker"
+                    icon: "gauge.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_release: sm.current = "mood_screen"
+                    on_release: nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Habit Tracker"
+                    icon: "habits.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_press: sm.current = "habits"
+                    on_release: nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "My Journal"  # Navigate to the journal screen
+                    icon: "journal.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_press:
+                        sm.current = "journal"  # Navigate to the journal screen
+                        nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Meditation Timer"  # Navigate to the meditation screen
+                    icon: "meditation.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_release:
+                        sm.current = "meditation"  # Navigate to the meditation screen
+                        nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Streaks & Rewards"  # Settings item in the menu
+                    icon: "trophy.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_press: sm.current ="rewards"
+                    on_release: nav_drawer.set_state("close")
+
+                MDNavigationDrawerItem:
+                    text: "Settings"  # Settings item in the menu
+                    icon: "settings.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_press: sm.current ="settings"
+                    on_release: nav_drawer.set_state("close")
+
+                # BoxLayout at the bottom for the logout button
+                BoxLayout:
+                    size_hint_y: None
+                    height: "50dp"
+
+                # Logout item at the bottom of the drawer
+                MDNavigationDrawerItem:
+                    text: "Logout"
+                    icon: "logout.png"
+                    md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == 'Light' else app.theme_cls.secondary_text_color
+                    text_color: (0, 0, 0, 1) if app.theme_cls.theme_style == "Light" else (1, 1, 1, 1)
+                    on_press: sm.current ="login_screen"
+                    on_press: nav_drawer.set_state("close")
+
+# -----------------------------
+# Login Screen Layout: Soheib
+# -----------------------------
+<LoginScreen>:
+    name: "login_screen"
+    id: login_screen
+    md_bg_color: root.theme_cls.bg_normal
+
+    FloatLayout:
+        MDTopAppBar:
+            pos_hint: {"top": 1}
+            title: "Login"
+
+        MDLabel:
+            text: "Email"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.75}
+            halign: "center"
+
+        MDTextField:
+            id: email
+            hint_text: "Enter your email"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.67}
+            mode: "fill"  # Try "line" or "fill" instead of "rectangle"
+            helper_text_mode: "on_focus"  # Ensures hint text behaves correctly
+            on_focus: if not self.focus: self.text = self.text  # Force UI update
+
+        MDLabel:
+            text: "Password"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.58}
+            halign: "center"
+
+        MDTextField:
+            id: password
+            hint_text: "Enter your password"
+            password: True
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
+
+        MDRaisedButton:
+            text: "Login"
+            id: login_btn
+            md_bg_color: 0, 0.6, 0.8, 1
+            text_color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.38}
+            on_press: root.login_btn()
+
+        MDLabel:
+            text: "Don't Have An Account?"
+            font_style: "Body1"
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
+            halign: "center"
+
+        MDRaisedButton:
+            text: "Sign Up"
+            md_bg_color: 0.1, 0.6, 0.2, 1
+            text_color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.23}
+            on_press: app.root.ids.sm.current = "signup_screen"
+
+        MDRaisedButton:
+            text: "Forgot Password?"
+            md_bg_color: 0.8, 0.3, 0, 1
+            text_color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.15}
+            on_press:  app.root.ids.sm.current = "forgot_screen"
+
+
+# -----------------------------
+# Mood Tracker Screen Screen Layout: Soheib
+# -----------------------------
+<MoodTrackerScreen>:
+    md_bg_color: root.theme_cls.bg_normal
+    name: "mood_screen"
+    id: mood_screen
+
+    FloatLayout:
+
+        MDTopAppBar:
+
+            pos_hint: {"top": 1}
+            title:"Mood Tracker"
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+
+        Spinner:
+            id: week_spinner
+            text: "Select a Week"
+            values: []
+            size_hint: (0.6, 0.1)
+            pos_hint: {"center_x": 0.5, "top": 0.9}
+            on_text: root.plot_graph(self.text)
+            background_color: 0, 0, 0.8, 1
+            color: 1, 1, 1, 1
+            font_size: "18sp"
+            option_cls: "CustomSpinnerOption"
+
+        BoxLayout:
+            id: graph_container
+            orientation: "vertical"
+            size_hint: 1, 0.6
+            pos_hint: {"top": 0.8}
+
+# -----------------------------
+# Reset Screen Layout: Soheib
+# -----------------------------
+<ResetScreen>:
+    name: "reset_screen"
+    md_bg_color: root.theme_cls.bg_normal
+
+
+    FloatLayout:
+        MDTopAppBar:
+            pos_hint: {"top": 1}
+            title: "Reset Your Password"
+            left_action_items: [["arrow-left", lambda x: app.goto_login()]]
+
+        MDLabel:
+            text: "New Password"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.75}
+            halign: "center"
+
+        MDTextField:
+            id: new_password
+            hint_text: "Enter new password"
+            password: True
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.67}
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
+
+        MDLabel:
+            text: "Confirm Password"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.58}
+            halign: "center"
+
+        MDTextField:
+            id: confirm_password
+            hint_text: "Re-enter new password"
+            password: True
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
+
+        MDRaisedButton:
+            text: "Reset Password"
+            md_bg_color: 0, 0.6, 0.8, 1
+            text_color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.35}
+            on_release: root.reset_password()
+
+
+# -----------------------------
+# Forgot Screen Layout: Soheib
+# -----------------------------
+<ForgotScreen>:
+    name: "forgot_screen"
+    md_bg_color: root.theme_cls.bg_normal
+
+    FloatLayout:
+    MDTopAppBar:
+        pos_hint: {"top": 1}
+        title: "Reset Password"
+        left_action_items: [["arrow-left", lambda x: app.goto_login()]]
+
+    MDLabel:
+        text: "Email"
+        font_style: "H6"
+        pos_hint: {"center_x": 0.5, "center_y": 0.85}
+        halign: "center"
+
+    MDTextField:
+        id: f_email
+        hint_text: "Enter your email"
+        size_hint_x: 0.8
+        pos_hint: {"center_x": 0.5, "center_y": 0.75}
+        mode: "fill"
+        helper_text_mode: "on_focus"
+        on_focus: if not self.focus: self.text = self.text
+
+    MDLabel:
+        text: "Security Question: What is the name of your birthplace?"
+        font_style: "H6"
+        size_hint_x: 0.8
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        halign: "center"
+
+    MDTextField:
+        id: f_security
+        hint_text: "Enter your answer"
+        size_hint_x: 0.8
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        mode: "fill"
+        helper_text_mode: "on_focus"
+        on_focus: if not self.focus: self.text = self.text
+
+    MDRaisedButton:
+        text: "Reset Password"
+        md_bg_color: 1, 0, 0, 1
+        text_color: 1, 1, 1, 1
+        size_hint_x: 0.5
+        pos_hint: {"center_x": 0.5, "center_y": 0.35}
+        on_press: root.verify_security()
+
+# -----------------------------
+# SignUp Screen Layout: Soheib
+# -----------------------------
+
+<SignupScreen>:
+    name: "signup_screen"
+    md_bg_color: root.theme_cls.bg_normal
+
+    FloatLayout:
+        MDTopAppBar:
+            pos_hint: {"top": 1}
+            title: "Sign Up"
+            left_action_items: [["arrow-left", lambda x: app.goto_login()]]
+
+        MDLabel:
+            text: "First Name"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.88}
+            halign: "center"
+
+        MDTextField:
+            id: fname
+            hint_text: "Enter your first name"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.8}
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
+
+        MDLabel:
+            text: "Last Name"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.72}
+            halign: "center"
+
+        MDTextField:
+            id: lname
+            hint_text: "Enter your last name"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.64}
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
+
+        MDLabel:
+            text: "Email"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.56}
+            halign: "center"
+
+        MDTextField:
+            id: up_email
+            hint_text: "Enter your email"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.48}
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
+
+        MDLabel:
+            text: "Password"
+            font_style: "H6"
+            pos_hint: {"center_x": 0.5, "center_y": 0.4}
+            halign: "center"
+
+        MDTextField:
+            id: up_password
+            hint_text: "Enter your password"
+            password: True
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.32}
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
+
+        MDLabel:
+            text: "Security Question: What is the name of your birthplace?"
+            font_style: "Body1"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.24}
+            halign: "center"
+
+        MDTextField:
+            id: security_ans
+            hint_text: "Enter your answer"
+            size_hint_x: 0.8
+            pos_hint: {"center_x": 0.5, "center_y": 0.16}
+            mode: "fill"
+            helper_text_mode: "on_focus"
+            on_focus: if not self.focus: self.text = self.text
+
+        MDRaisedButton:
+            text: "Sign Up"
+            md_bg_color: 0, 0.6, 0.8, 1
+            text_color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            pos_hint: {"center_x": 0.5, "center_y": 0.06}
+            on_press: root.up_btn()
+
+
+# -----------------------------
+# Damien
+# -----------------------------
+<SwipeToDeleteItem@MDCardSwipe>:
+    text: ""
+    date: ""
+    entry_id: ""
+    size_hint_y: None
+    height: dp(120)
+
+    MDCardSwipeLayerBox:
+        radius: [10, 10, 10, 10]
+        padding: "8dp"
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: self.radius
+
+        MDIconButton:
+            icon: "archive"
+            pos_hint: {"center_y": 0.5}
+            on_release: app.root.ids.sm.get_screen("journal").archive_entry(root.entry_id)
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": 0.5}
+            on_release: app.root.ids.sm.get_screen("journal").remove_entry(root.entry_id)
+
+    MDCardSwipeFrontBox:
+        id: front_box
+        radius: [20, 20, 20, 20]
+        orientation: "vertical"
+        padding: dp(10)
+        md_bg_color: 1, 1, 1, 1  # White background for entries
+
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 0.7
+            MDLabel:
+                id: label
+                text: root.text
+                shorten: True
+                shorten_from: "right"
+                max_lines: 2
+                size_hint_x: 0.8
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+            MDIconButton:
+                icon: "eye"
+                pos_hint: {"center_y": 0.5}
+                on_release: app.root.ids.sm.get_screen("journal").open_entry_dialog(root.entry_id)
+
+
+        MDLabel:
+            text: root.date
+            font_style: "Caption"
+            size_hint_y: None
+            height: dp(20)
+            halign: "right"
+            valign: "middle"
+            text_size: self.size
+
+
+# -----------------------------
+# Journal Screen Layout: Damien
+# -----------------------------
+<JournalScreen>:
+    name: "journal"
+    md_bg_color: root.theme_cls.bg_normal
+
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0.97, 0.97, 0.97, 1
+
+
+        MDTopAppBar:
+            title: "Journal"
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+            elevation: 4
+
+        RelativeLayout:
+            RecycleView:
+                id: rv
+                viewclass: "SwipeToDeleteItem"
+
+                RecycleBoxLayout:
+                    default_size: None, dp(80)
+                    default_size_hint: 1, None
+                    size_hint_y: None
+                    height: self.minimum_height
+                    orientation: "vertical"
+                    spacing: dp(10)
+                    padding: dp(10)
+
+            MDLabel:
+                id: archive_label
+                text: "No archived entries"
+                halign: "center"
+                opacity: 0
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                text_color: 1, 0, 0, 1
+
+        # ========== Entry Input and Buttons ==========
+        MDCard:
+            size_hint_y: None
+            height: "200dp"
+            elevation: 10
+            padding: "20dp"
+
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: "10dp"
+
+                ScrollView:
+                    size_hint_y: None
+                    height: "100dp"
+
+                    MDTextField:
+                        id: entry_text
+                        mode: "rectangle"
+                        radius: [10, 10, 10, 10]
+                        fill_color: 1, 1, 1, 1
+                        hint_text: "Type your journal entry"
+                        multiline: True
+                        size_hint_y: None
+                        height: self.minimum_height
+                        text_size: self.width, None
+                        padding: [10, 10, 10, 10]
+
+                MDBoxLayout:
+                    size_hint_y: None
+                    height: "40dp"
+                    spacing: "10dp"
+                    MDRaisedButton:
+                        text: "Save Entry"
+                        on_release: root.add_entry()
+                    MDRaisedButton:
+                        id: toggle_archive_btn
+                        text: "View Archive"
+                        on_release: root.toggle_archive_view()
+
+# -----------------------------
+# Meditation Screen Layout: Damien
+# -----------------------------
+<MeditationScreen>:
+    name: "meditation"
+    md_bg_color: root.theme_cls.bg_normal
+
+    FloatLayout:
+        # Fixed top app bar for the meditation screen.
+        MDTopAppBar:
+            title: "Meditation Timer"
+            elevation: 3
+            size_hint_y: None
+            height: "56dp"
+            pos_hint: {"top": 1}
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+
+        # Meditation instructions near the top.
+        MDLabel:
+            text: "[b]Time to Meditate"
+            markup: True
+            text_color: 0.2, 0.6, 0.8, 1
+            halign: "center"
+            font_style: "H4"
+            size_hint: (1, None)
+            height: "40dp"
+            pos_hint: {"top": 0.88}
+
+        # A rectangle timer display using MDCard with custom canvas instructions.
+        MDCard:
+            size_hint: (None, None)
+            size: ("300dp", "150dp")
+            pos_hint: {"center_x": 0.5, "center_y": 0.66}
+            elevation: 4
+            md_bg_color: 0, 0, 0, 0 #Transparent background
+            canvas.before:
+                # Outer rectangle (blue)
+                Color:
+                    rgba: 0.4, 0.7, 0.7, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(20), dp(20), dp(20), dp(20)]
+                # Inner rectangle (purple) to create a border effect.
+                Color:
+                    rgba: 0.8, 0.9, 0.9, 1
+                RoundedRectangle:
+                    pos: (self.x + dp(20), self.y + dp(20))
+                    size: (self.width - dp(40), self.height - dp(40))
+                    radius: [dp(15), dp(15), dp(15), dp(15)]
+
+            # The timer label is centered within the rectangular card.
+            FloatLayout:
+                MDLabel:
+                    id: timer_label
+                    text: root.timer_label_text #Dynamically updates based on the timer.
+                    halign: "center"
+                    font_style: "H2"
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+
+        # Timer control buttons (Start & Reset) below the circle.
+        MDBoxLayout:
+            orientation: "horizontal"
+            spacing: "20dp"
+            size_hint: (None, None)
+            height: "1dp"
+            width: "200dp"
+            pos_hint: {"center_x": 0.43, "center_y": 0.46}
+
+            MDRaisedButton:
+                text: "Start"
+                md_bg_color: 0.2, 0.4, 0.8, 1
+                text_color: 1, 1, 1, 1
+                font_size: "18sp"
+                bold: True
+                on_press: root.start_timer()
+
+            MDRaisedButton:
+                text: "Pause"
+                md_bg_color: 1, 0.7, 0, 1
+                text_color: 1, 1, 1, 1
+                font_size: "18sp"
+                bold: True
+                on_press: root.pause_timer()
+
+            MDRaisedButton:
+                text: "Reset"
+                md_bg_color: 1, 0.3, 0.3, 1
+                text_color: 1, 1, 1, 1
+                font_size: "18sp"
+                bold: True
+                on_press: root.reset_timer()
+
+        # Label for the meditation sound options.
+        MDLabel:
+            text: "Choose Your Meditation Sounds"
+            halign: "center"
+            size_hint: (1, None)
+            height: "40dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.35}
+            font_style: "H6"
+
+        # BoxLayout containing buttons for sound selection.
+        MDGridLayout:
+            cols: 2
+            spacing: "10dp"
+            size_hint: (None, None)
+            width: "280dp"
+            height: "140dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+
+            # Each MDFillRoundFlatIconButton calls the select_sound method in MeditationScreen.
+            MDFillRoundFlatIconButton:
+                icon: "wave.png"
+                text: "Ocean Waves"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Ocean.mp3")
+            MDFillRoundFlatIconButton:
+                icon: "rain.png"
+                text: "Rain Sounds"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Rain.mp3")
+            MDFillRoundFlatIconButton:
+                icon: "bowl.png"
+                text: "Tibetan Bowl"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Bowl.mp3")
+            MDFillRoundFlatIconButton:
+                icon: "bonfire.png"
+                text: "Fire Crackles"
+                ripple_color: 1, 0, 0, 0.3
+                on_press: root.select_sound("Bonfire.mp3")
+
+# -----------------------------
+# Settings Screen Layout: Connor
+# -----------------------------
+
+<SettingsScreen>:
+    name: "settings"
+    md_bg_color: root.theme_cls.bg_normal
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Menu"
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+            elevation: 10
+
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: "10dp"
+            spacing: "10dp"
+
+            Image:
+                source: "settings.png"
+                size_hint: None, None
+                size: "85dp", "85dp"
+                pos_hint: {"center_x": 0.5}
+
+            MDLabel:
+                text: "Settings"
+                font_style: "H5"
+                halign: "center"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                spacing: dp(10)
+                padding: dp(10)
+                md_bg_color: root.theme_cls.bg_normal
+
+                MDIcon:
+                    icon: "theme-light-dark"
+                    size_hint: None, None
+                    size: dp(24), dp(24)
+                    pos_hint: {'center_y': 0.5}
+
+                MDLabel:
+                    text: "Dark Mode"
+                    valign: "center"
+                    size_hint_x: 0.7
+
+                MDSwitch:
+                    id: dark_mode_switch
+                    on_active: root.toggle_dark_mode(self, self.active)
+                    pos_hint: {'center_y': 0.5}
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                spacing: dp(10)
+                padding: dp(10)
+                md_bg_color: root.theme_cls.bg_normal
+
+                MDIcon:
+                    icon: "bell-outline"
+                    size_hint: None, None
+                    size: dp(24), dp(24)
+                    pos_hint: {'center_y': 0.5}
+
+                MDLabel:
+                    text: "Notifications"
+                    valign: "center"
+                    size_hint_x: 0.7
+
+                MDSwitch:
+                    id: notifications_switch
+                    on_active: root.toggle_notifications(self, self.active)
+                    pos_hint: {'center_y': 0.5}
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                spacing: dp(10)
+                padding: dp(10)
+                md_bg_color: root.theme_cls.bg_normal
+
+                MDIcon:
+                    icon: "palette"
+                    size_hint: None, None
+                    size: dp(24), dp(24)
+                    pos_hint: {'center_y': 0.5}
+
+                MDLabel:
+                    text: "Select Theme"
+                    valign: "center"
+                    size_hint_x: 0.7
+
+                MDRectangleFlatIconButton:
+                    icon: "palette"
+                    text: "Change theme"
+                    pos_hint: {'center_y': 0.5}
+                    on_release: root.change_theme()
+# -----------------------------
+# Habits Screen Layout: Connor
+# -----------------------------
+
+<HabitTrackerScreen>:
+    name: "habits"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+        md_bg_color: 0.96, 0.96, 0.86, 1
+
+        MDTopAppBar:
+            title: "Habit Tracker"
+            left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+            elevation: 10
+
+        MDGridLayout:
+            cols: 5
+            spacing: "20dp"
+            size_hint_y: None
+            height: "50dp"
+
+            MDRaisedButton:
+                id: mon_button
+                text: "Mon"
+                on_press: root.toggle_day_selection(self)
+            MDRaisedButton:
+                id: tue_button
+                text: "Tue"
+                on_press: root.toggle_day_selection(self)
+            MDRaisedButton:
+                id: wed_button
+                text: "Wed"
+                on_press: root.toggle_day_selection(self)
+            MDRaisedButton:
+                id: thu_button
+                text: "Thu"
+                on_press: root.toggle_day_selection(self)
+            MDRaisedButton:
+                id: fri_button
+                text: "Fri"
+                on_press: root.toggle_day_selection(self)
+
+        ScrollView:
+            MDBoxLayout:
+                id: habits_list
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                adaptive_height: True
+
+    MDFloatingActionButton:
+        icon: "plus"
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
+        on_release: root.add_habit_dialog()
+
+# -----------------------------
+# Rewards Screen Layout: Danny
+# -----------------------------
+<RewardsScreen>:
+    name: "rewards"
+    MDTopAppBar:
+        title: "Streaks and Rewards"
+        left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+        elevation: 4
+        pos_hint: {"top":1}
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(10)
+        padding: dp(20)
+        pos_hint: {"y":0.2}
+
+
+
+        MDBoxLayout:
+            orientation: "vertical"
+            spacing: dp(20)
+
+            # TROPHY CARD
+            MDCard:
+                orientation: "vertical"
+                padding: dp(10)
+                spacing: dp(20)
+                radius: [12]
+                elevation: 4
+                size_hint_y: None
+                height: dp(100)
+
+                Image:
+                    source: "trophy.png"
+                    size_hint: None, None
+                    size: dp(80), dp(80)
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+            # COINS CARD
+            MDCard:
+                orientation: "horizontal"
+                padding: dp(10)
+                spacing: dp(20)
+                radius: [12]
+                elevation: 4
+                size_hint_y: None
+                height: dp(60)
+
+                MDLabel:
+                    text: "Coins:"
+                    font_style: "H6"
+                    theme_text_color: "Primary"
+                    size_hint_x: 0.6
+                    valign: "middle"
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: dp(6)
+                    size_hint_x: None
+                    width: self.minimum_width
+                    size_hint_y: None
+                    height: dp(24)
+                    pos_hint: {"center_y": 0.5}
+
+                    MDLabel:
+                        id: coin_amount
+                        text: ""
+                        font_style: "H6"
+                        theme_text_color: "Primary"
+                        halign: "right"
+                        valign: "middle"
+                        size_hint: None, None
+                        width: dp(100)
+                        height: dp(24)
+                        text_size: self.size
+
+                    Image:
+                        source: "star.png"
+                        size_hint: None, None
+                        size: dp(24), dp(24)
+                        allow_stretch: True
+                        keep_ratio: True
+                        pos_hint: {"center_y": 0.5}
+
+            # STREAK CARD
+            MDCard:
+                orientation: "horizontal"
+                padding: dp(10)
+                spacing: dp(20)
+                radius: [12]
+                elevation: 4
+                size_hint_y: None
+                height: dp(60)
+
+                MDLabel:
+                    text: "Streak:"
+                    font_style: "H6"
+                    theme_text_color: "Primary"
+                    size_hint_x: 0.6
+                    valign: "middle"
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: dp(6)
+                    size_hint_x: None
+                    width: self.minimum_width
+                    size_hint_y: None
+                    height: dp(24)
+                    pos_hint: {"center_y": 0.5}
+
+                    MDLabel:
+                        id: streak_amount
+                        text: ""
+                        font_style: "H6"
+                        theme_text_color: "Primary"
+                        halign: "right"
+                        valign: "middle"
+                        size_hint: None, None
+                        width: dp(100)
+                        height: dp(24)
+                        text_size: self.size
+
+                    Image:
+                        source: "fire.png"
+                        size_hint: None, None
+                        size: dp(24), dp(24)
+                        allow_stretch: True
+                        keep_ratio: True
+                        pos_hint: {"center_y": 0.5}
+
+            # MILESTONE CARD
+            MDCard:
+                orientation: "horizontal"
+                padding: dp(10)
+                spacing: dp(20)
+                radius: [12]
+                elevation: 4
+                size_hint_y: None
+                height: dp(60)
+
+                MDLabel:
+                    text: "Milestones:"
+                    font_style: "H6"
+                    theme_text_color: "Primary"
+                    size_hint_x: 0.6
+                    valign: "middle"
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: dp(6)
+                    size_hint_x: None
+                    width: self.minimum_width
+                    size_hint_y: None
+                    height: dp(24)
+                    pos_hint: {"center_y": 0.5}
+
+                    MDLabel:
+                        id: milestone_amount
+                        text: "0"
+                        font_style: "H6"
+                        theme_text_color: "Primary"
+                        halign: "right"
+                        valign: "middle"
+                        size_hint: None, None
+                        width: dp(100)
+                        height: dp(24)
+                        text_size: self.size
+
+                    Image:
+                        source: "gold-medal.png"
+                        size_hint: None, None
+                        size: dp(24), dp(24)
+                        allow_stretch: True
+                        keep_ratio: True
+                        pos_hint: {"center_y": 0.5}
+
+            # BUTTONS BELOW CARDS
+            MDBoxLayout:
+                size_hint_y: None
+                height: dp(80)
+                spacing: dp(45)
+                padding: dp(10)
+                orientation: "horizontal"
+                halign: "center"
+                pos_hint: {"center_x": 0.5}
+
+                MDRaisedButton:
+                    text: "Refresh"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_press: root.update_display()
+                    size_hint: None, None
+                    size: dp(100), dp(50)
+                    font_size: "16sp"
+
+                MDRaisedButton:
+                    text: "History"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_press: root.show_history()
+                    size_hint: None, None
+                    size: dp(100), dp(50)
+                    font_size: "16sp"
+
+                MDRaisedButton:
+                    text: "Calendar"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_press: root.open_calendar()
+                    size_hint: None, None
+                    size: dp(100), dp(50)
+                    font_size: "16sp"
+
+
+# -----------------------------
+# Chatbot Screen Layout: Danny
+# -----------------------------
+<ChatbotScreen>:
+    name: "chatbot"
+    id: chatbot_screen
+
+    FloatLayout:
+        Image:
+            source: "ColorBotLogo.png"
+            size_hint: None, None
+            size: 200, 200
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            opacity: 0.4
+
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: 1, 1
+
+            MDTopAppBar:
+                title: "ZenBot"
+                left_action_items: [["menu", lambda x: app.root.ids.nav_drawer.set_state("open")]]
+                elevation: 4
+
+
+            ScrollView:
+                id: chat_scroll
+                do_scroll_x: False
+                bar_width: 5
+
+                BoxLayout:
+                    id: chat_box
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: 10
+                    padding: [10, 20]
+
+            BoxLayout:
+                size_hint_y: 0.15
+                padding: [10, 5]
+                spacing: 10
+                canvas.before:
+                    Color:
+                        rgba: 0.85, 0.85, 0.85, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                MDTextField:
+                    id: user_input
+                    hint_text: "Type your message..."
+                    mode: "rectangle"
+                    size_hint_x: 0.8
+                    multiline: False
+                    height: dp(48)
+                    on_text_validate: root.send_message()
+
+                MDRaisedButton:
+                    text: "Send"
+                    size_hint_x: 0.2
+                    height: dp(48)  # Match TextField height
+                    pos_hint: {"center_y": 0.3}  # Center vertically
+                    on_press: root.send_message()
