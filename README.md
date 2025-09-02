@@ -1,4 +1,4 @@
-[▶️ Watch Demo Video](https://github.io/swobenator/TeamProject/demo/demo.mp4)
+[▶️ Watch Demo Video](https://github.io/swobenator/TeamProject/tree/main/demo)
 
 
 This project involves developing a metal health app (Zen Flow) for users specifically aged between 15-30 to track and improve their mental health and wellbeing.
